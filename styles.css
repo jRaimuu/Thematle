@@ -8,14 +8,51 @@ body {
     background-color: #202231;
 }
 
+.v-center {
+    position: relative;
+    top: 15vh;
+}
+
+.justify-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.window-grid {
+    display: grid; 
+    grid-template-columns: 1fr, 1fr 1fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr; 
+    gap: 20px; 
+    grid-template-areas: 
+      "score-area score-area card-area card-area"
+      "score-area score-area card-area card-area"; 
+}
+
+.score-grid {
+    display: grid; 
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px; 
+    grid-template-areas: 
+      "orange-area"
+      "purple-area"; 
+}
+
+
+.card-square { 
+    grid-area: card-area; 
+}
+
+.score-square { 
+    grid-area: score-area; 
+}
+
 .word-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     column-gap: 10px;
     row-gap: 10px;
-    position: absolute;
-    top: 20%;
 }
 
 .flex-center {
@@ -23,6 +60,36 @@ body {
     justify-content: center;
     position: relative;
     min-height: 100vh;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.orange-square,
+.purple-square {
+    background: linear-gradient(45deg, #d3581f, #f4a74d);
+    min-width: 250px;
+    height: 100%;
+    border-radius: 15px;
+    grid-area: orange-area; 
+    border: 1px solid #fadb4f;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+}
+
+.purple-square {
+    background: linear-gradient(45deg, #3f31ff, #7041ff);
+    grid-area: purple-area; 
+    border: 1px solid #8a5fff;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
 }
 
 .h-align-card {
@@ -66,16 +133,8 @@ h3 {
     box-shadow: 2px 5px 5px #0f112e;
 }
 
-.unknown-card {
-    /* background-color: #7041ff; */
-    background: linear-gradient(45deg, #472151, #624185);
-    min-width: 60px;
-    width: 10vw;
-    height: 12vh;
-    border-radius: 5px;
-    border: 1px solid #5f3191;
-    border-right: 1px solid transparent;
-    border-bottom: 1px solid transparent;
+.score-shadow {
+    box-shadow: 10px 5px 5px #0f112e;
 }
 
 .cover {
@@ -84,11 +143,24 @@ h3 {
     object-fit: contain;
 }
 
+.unknown-card {
+    /* background-color: #7041ff; */
+    background: linear-gradient(-45deg, #472151, #624185);
+    min-width: 60px;
+    width: 10vw;
+    height: 12vh;
+    border-radius: 5px;
+    border: 2px solid #5f3191;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+}
+
+
 .orange-guessed-card,
 .purple-guessed-card,
 .wild-guessed-card {
     /* background-color: #25c0b7; */
-    background: linear-gradient(45deg, #d3581f, #f4a74d);
+    background: linear-gradient(-45deg, #d3581f, #f4a74d);
     min-width: 60px;
     width: 10vw;
     height: 12vh;
@@ -99,14 +171,14 @@ h3 {
 }
 
 .purple-guessed-card {
-    background: linear-gradient(45deg, #3f31ff, #7041ff);
+    background: linear-gradient(-45deg, #3f31ff, #7041ff);
     border: 1px solid #8a5fff;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
 }
 
 .wild-guessed-card {
-    background: linear-gradient(45deg, #472151, #624185);
+    background: linear-gradient(-45deg, #472151, #624185);
     border: 1px solid #5f3191;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
@@ -119,12 +191,12 @@ h3 {
 }
 
 
-.fbody {
+body {
     --s: 50px;
-    --c: #191b22;
+    --c: #202231;
     --_s: calc(2*var(--s)) calc(2*var(--s));
     --_g: 35.36% 35.36% at;
-    --_c: #0000 66%, #20222a 68% 70%, #0000 72%;
+    --_c: #0000 66%, #1e202e88 68% 70%, #0000 72%;
     background:
         radial-gradient(var(--_g) 100% 25%, var(--_c)) var(--s) var(--s)/var(--_s),
         radial-gradient(var(--_g) 0 75%, var(--_c)) var(--s) var(--s)/var(--_s),
