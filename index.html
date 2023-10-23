@@ -11,7 +11,7 @@
 
 </style>
 
-<body class="">
+<body class="v-center">
     <!-- <div class="">
         <div class="pattern-dots-md gray-light">
             <img style="transform:translate(20px, 20px);"
@@ -26,11 +26,38 @@
         </div>
     </div> -->
 
-    <div class="window-grid flex-row v-center justify-evenly">
+    <div class="window-grid flex-row justify-evenly">
+
         <!-- Player Scores -->
         <div class="score-square score-grid">
-            <div class="orange-square score-shadow"></div>
-            <div class="purple-square score-shadow"></div>
+            <div class="orange-square score-shadow">
+                <div class="flex-row justify-between">
+                    <div class="orange-guessed-card card-shadow h-align-card inset-shadow m-square">
+                        <img class="cover" src="./assets/noun-thief-3736262.png">
+                    </div>
+                    <p class="score">8</p>
+                </div>
+                <div class="m-square">
+                    <p class="o-role-font">DECIPHERER</p>
+                    <p class="player-font">Name</p>
+                    <p class="o-role-font">AGENT</p>
+                    <p class="player-font">Name</p>
+                </div>
+            </div>
+            <div class="purple-square score-shadow">
+                <div class="flex-row justify-between">
+                    <div class="purple-guessed-card card-shadow h-align-card inset-shadow m-square">
+                        <img class="cover" src="./assets/noun-thief-3736262.png">
+                    </div>
+                    <p class="score">8</p>
+                </div>
+                <div class="m-square">
+                    <p class="p-role-font">DECIPHERER</p>
+                    <p class="player-font">Name</p>
+                    <p class="p-role-font">AGENT</p>
+                    <p class="player-font">Name</p>
+                </div>
+            </div>
         </div>
 
 
@@ -127,6 +154,25 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Clue Input -->
+    <div class="flex-col input-font input-bg input-style">
+        <form>
+            <input class="" type="text" id="clue" name="decipherer-clue" placeholder="Type your clue here">
+            <select class="h-align" id="clue-dropdown" name="clue-degree">
+                <option value="one" >1</option>
+                <option value="two" >2</option>
+                <option value="three" >3</option>
+                <option value="four" >4</option>
+                <option value="five" >5</option>
+                <option value="six" >6</option>
+                <option value="seven" >7</option>
+                <option value="eight" >8</option>
+                <option value="nine" >9</option>
+            </select>
+            <button type="sumbit">Give Clue</button>
+        </form>
     </div>
 
 </body>
