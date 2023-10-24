@@ -7,3 +7,5 @@
 ### Game Objective
 
 ### Game Rules
+
+### Game Mechanics
