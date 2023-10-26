@@ -16,7 +16,7 @@ body {
 
 .v-center {
     position: relative;
-    top: 15vh;
+    top: 12vh;
 }
 
 .justify-evenly {
@@ -30,13 +30,13 @@ body {
 }
 
 .window-grid {
-    display: grid; 
-    grid-template-columns: 1fr, 1fr 1fr 1fr; 
-    grid-template-rows: 1fr 1fr 1fr; 
-    gap: 20px; 
-    grid-template-areas: 
-      "score-area score-area card-area card-area"
-      "score-area score-area card-area card-area"; 
+    display: grid;
+    grid-template-columns: 1fr, 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 20px;
+    grid-template-areas:
+        "score-area score-area card-area card-area"
+        "score-area score-area card-area card-area";
 }
 
 .red {
@@ -44,22 +44,22 @@ body {
 }
 
 .score-grid {
-    display: grid; 
+    display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 20px; 
-    grid-template-areas: 
-      "orange-area"
-      "purple-area"; 
+    gap: 20px;
+    grid-template-areas:
+        "orange-area"
+        "purple-area";
 }
 
 
-.card-square { 
-    grid-area: card-area; 
+.card-square {
+    grid-area: card-area;
 }
 
-.score-square { 
-    grid-area: score-area; 
+.score-square {
+    grid-area: score-area;
 }
 
 .word-grid {
@@ -93,7 +93,7 @@ body {
     min-width: 300px;
     height: 100%;
     border-radius: 20px;
-    grid-area: orange-area; 
+    grid-area: orange-area;
     border: 1px solid #fadb4f;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
@@ -101,7 +101,7 @@ body {
 
 .purple-square {
     background: linear-gradient(45deg, #3f31ff, #7041ff);
-    grid-area: purple-area; 
+    grid-area: purple-area;
     border: 1px solid #8a5fff;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
@@ -207,7 +207,8 @@ h3 {
 
 .orange-guessed-card,
 .purple-guessed-card,
-.wild-guessed-card {
+.wild-guessed-card,
+.black-guessed-card {
     /* background-color: #25c0b7; */
     background: linear-gradient(-45deg, #d3581f, #f4a74d);
     min-width: 60px;
@@ -233,6 +234,13 @@ h3 {
     border-bottom: 1px solid transparent;
 }
 
+.black-guessed-card {
+    background: linear-gradient(-45deg, #213555, #202231);
+    border: 1px solid #4F709C;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+}
+
 .inset-shadow {
     box-shadow:
         12px 12px 16px 0 #00000000 inset,
@@ -251,9 +259,9 @@ h3 {
     font-weight: 700;
 }
 
-.input-style, 
+.input-style,
 #clue-dropdown,
-.clue-btn {
+.submit-btn {
     width: 15vw;
     background-color: white;
     border: none;
@@ -268,10 +276,14 @@ h3 {
     padding-left: 0px;
 }
 
-.clue-btn {
+.submit-btn {
     width: 100px;
     text-align: center;
     padding-left: 0px;
+    color: white;
+    background: linear-gradient(60deg, #5037ff, purple, orange);
+    border: 1px solid #787878;
+    margin-left: 10px;
 }
 
 footer {
@@ -286,6 +298,8 @@ footer {
     font-family: 'Segoe UI';
     color: white;
     font-style: italic;
+    position: relative;
+    bottom: -25px;
 }
 
 
