@@ -5,6 +5,19 @@
 // UCID: 30150737 
 
 let themePacks;
+const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
+
+fetch(jsonURL).then(response => {
+    if (!response.ok) {
+        throw new Error('There is a problem with the network response');
+    }
+    return response.json();
+}).then(data => {
+    cardPacks = data;
+
+}).catch(error => {
+    console.error('Error fetching JSON:', error);
+});
 
 class Team {
     constructor (color, decipherer, agent, score) {
@@ -50,23 +63,9 @@ class GameContext {
     }
 }
 
-const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
-
-fetch(jsonURL).then(response => {
-    if (!response.ok) {
-        throw new Error('There is a problem with the network response');
-    }
-    return response.json();
-}).then(data => {
-    cardPacks = data;
-
-}).catch(error => {
-    console.error('Error fetching JSON:', error);
-});
-
 
 window.addEventListener('load', function () {
-    setupGameConfig();
+    // setupGameConfig();
   });
 
 
@@ -130,10 +129,10 @@ function weightedRandom(items, weights) {
     //Also note that the topic will also be randomly chosen
 
     //Unpackage the cardpack
-    unpackageCards();
+    // unpackageCards();
 
-    const cumulativeWeights = [];
-    for (let i = 0; i < weights)
+    // const cumulativeWeights = [];
+    // for (let i = 0; i < weights);
     
 
 }
