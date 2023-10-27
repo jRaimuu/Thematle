@@ -8,7 +8,8 @@ const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
 
 fetch(jsonURL).then(response => {
     if (!response.ok) {
-        console.log("There is a problem with the response");
+        throw new Error('There is a problem with the network response');
+        console.log("Error", response);
     }
     return response.json();
 }).then(data => {
