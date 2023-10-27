@@ -4,25 +4,7 @@
 // Name: Liam Sarjeant
 // UCID: 30150737 
 
-const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
-
-fetch(jsonURL).then(response => {
-    if (!response.ok) {
-        throw new Error('There is a problem with the network response');
-        console.log("Error", response);
-    }
-    return response.json();
-}).then(data => {
-    console.log(data);
-
-}).catch(error => {
-    console.error('Error fetching JSON:', error);
-});
-
-
-window.addEventListener('load', function () {
-    setupGameConfig();
-  });
+let themePacks;
 
 class Team {
     constructor (color, decipherer, agent, score) {
@@ -53,17 +35,6 @@ class Card {
     }
 }
 
-/**
- * TODO: After each guess a player makes:
- * update the card icon
- * decrement the score: if card.color == orange: +1 orange; if card.color == purple: +1 purple 
- * check if the score is 0, if it is then that team wins
- * 
- * #TODO: Gamestate
- * after each button press, we set the game state and whoseturn
- * 
- */
-
 class GameContext {
     constructor(team, state, clue, numberOfWords){
         this.whoseTurn = team;
@@ -78,6 +49,39 @@ class GameContext {
         //maybe set property whoseTurn on the team object??
     }
 }
+
+const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
+
+fetch(jsonURL).then(response => {
+    if (!response.ok) {
+        throw new Error('There is a problem with the network response');
+    }
+    return response.json();
+}).then(data => {
+    cardPacks = data;
+
+}).catch(error => {
+    console.error('Error fetching JSON:', error);
+});
+
+
+window.addEventListener('load', function () {
+    setupGameConfig();
+  });
+
+
+
+/**
+ * TODO: After each guess a player makes:
+ * update the card icon
+ * decrement the score: if card.color == orange: +1 orange; if card.color == purple: +1 purple 
+ * check if the score is 0, if it is then that team wins
+ * 
+ * #TODO: Gamestate
+ * after each button press, we set the game state and whoseturn
+ * 
+ */
+
 
 
 //This will store the avatar icons that will update the icons displayed next to the score
@@ -124,6 +128,14 @@ function weightedRandom(items, weights) {
     //RANDOM selection ALGORITHM to choose words randomly from
     //the topics in the words object
     //Also note that the topic will also be randomly chosen
+
+    //Unpackage the cardpack
+    unpackageCards();
+
+    const cumulativeWeights = [];
+    for (let i = 0; i < weights)
+    
+
 }
 
 /**
@@ -135,6 +147,13 @@ function updateCard() {
     setCardIcon("path");
     //dismount word div and h3
 
+}
+
+function unpackageCards(theme) {
+    // wordList = themePacks.Medical.words;
+    // wordlist.forEach(element => {
+        
+    // });
 }
 
 /**
