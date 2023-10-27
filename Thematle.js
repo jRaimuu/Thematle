@@ -4,68 +4,78 @@
 // Name: Liam Sarjeant
 // UCID: 30150737 
 
-/**
- * The final product will include animations for the cards being animated into
- * frame and having their values updated
- */
+const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
 
-const jsonURL = 'https';
-
-fetch(jsonURL)
-  .then(response => {
+fetch(jsonURL).then(response => {
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+        console.log("There is a problem with the response");
     }
     return response.json();
-  })
-  .then(data => {
+}).then(data => {
     console.log(data);
-  })
-  .catch(error => {
+
+}).catch(error => {
     console.error('Error fetching JSON:', error);
+});
+
+
+window.addEventListener('load', function () {
+    setupGameConfig();
   });
 
-
-//Object representing the orange team
-const team1 = {
-    //decipherer
-    //agent
-    //score
-    //wordList
-
-    //setters and getters for each of the propterties
-};
-
-//Object representing the purple team
-const team2 = {
-    //decipherer
-    //agent
-    //score
-    //wordList
-
-    //setters and getters for each of the propterties
-};
-
-//Context will keep track of whos turn it is
-const context = {
-    //whoseTurn
-    //clue
-    //numberOfWords
-    //other context dependent properties that have yet to be determined
-
-    //setters and getters for each of the propterties
-    // set context() {}
-    // get context() {}
-    // set clue() {}
-    // get clue() {}
-    // set numberOfWords() {}
-    // get numberOfWords() {}
+class Team {
+    constructor (color, decipherer, agent, score) {
+        this.color = color;
+        this.decipherer = decipherer;
+        this.agent = agent;
+        this.words = [];
+        this.win = false;
+        this.score = score;
+    }
 }
 
-const card = {
-    //index
-    //word
-    //cardType: black || neutral || team1 || team2 
+class Card {
+    constructor(id, type, word, state, iconPath) {
+        this.id = id;
+        this.type = type;
+        this.word = word;
+        this.guessed = state;
+        this.icon = iconPath; 
+    }
+
+    setCardIcon(iconPath) {
+        this.icon = iconPath;
+    }
+
+    setCardWord(word) {
+        this.word = word;
+    }
+}
+
+/**
+ * TODO: After each guess a player makes:
+ * update the card icon
+ * decrement the score: if card.color == orange: +1 orange; if card.color == purple: +1 purple 
+ * check if the score is 0, if it is then that team wins
+ * 
+ * #TODO: Gamestate
+ * after each button press, we set the game state and whoseturn
+ * 
+ */
+
+class GameContext {
+    constructor(team, state, clue, numberOfWords){
+        this.whoseTurn = team;
+        this.gameState = state; //orange decipherer, orange agent, puprle decipherer, purple agent
+        this.clue = clue;
+        this.numberOfWords = numberOfWords;
+
+    }
+
+    setWhoseTurn(team) {
+        this.whoseTurn = team;
+        //maybe set property whoseTurn on the team object??
+    }
 }
 
 
@@ -77,21 +87,32 @@ const nextAvatar = [
     // './assets/image3.png',
 ];
 
-/**
- * This will store the possible words that will be display on the cards.
- * This might be implemented as an array of tuples representing words that are similar to
- * one another, but will be distributed seperately to each team
- */
-const words = {
-    // kitchen: [("word1", "word2")], ...
-    // camping: [("word1", "word2")], ...
+function setupGameConfig() {
+    //Prompt to choose a themepack
+    //Prompt to choose a team
+    //Prompt to set agents and decipherers with names for each team
+    team1 = Team("Orange", decipherer1, agent1, 9);
+    team2 = Team("Purple", decipherer2, agent2, 8);
+    //Dismount the modal and call initializeGame
+}
+
+function initializeGame() {
+    
+    // create cards
+    // shuffle()
+}
+
+function createCards () {
+    //when making the card instance, include the default icon
+    //Card(id, type, "word", false, "./assets/unknown-mask.png") //creates an instance of the card
 }
 
 /**
  * At the start of the game randomly choose 
  */
 function shuffle() {
-    //Randomly assigns the words from each team to a card on the board
+    //Randomly indexes the cards on the board so they arent in the same
+    //place each game instance
 }
 
 /**
@@ -109,6 +130,9 @@ function weightedRandom(items, weights) {
  * depending on the context
  */
 function updateCard() {
+    //get the card at that index or with that id, depending on the implementation
+    setCardIcon("path");
+    //dismount word div and h3
 
 }
 
