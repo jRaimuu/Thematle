@@ -159,19 +159,17 @@ async function initializeGame() {
 }
 
 function createCards() {
+    let uniqueID = 0;
     //when making the card instance, include the default icon
     //Card(id, type, "word", false, "./assets/unknown-mask.png") //creates an instance of the card
     
-    //TODO find a move efficient way to loop and also add words to wild cards
-    //Have unique ids for each cards
-    //randomize cards
     const cardType = [
         { name: "team1", words: team1.words, count: 9 },
         { name: "team2", words: team2.words, count: 8 },
         { name: "neutral", words: wildCardList, count: 8 }
     ];
     
-    let uniqueID = 0;
+    //make a new card for each of the types in the cardType array
     for (const type of cardType) {
         for (let i = 0; i < type.count; i++) {
             cardInstancesArr.push(new Card(uniqueID++, type.name, type.words[i], false, "./assets/unknown-mask.png"));
@@ -181,8 +179,7 @@ function createCards() {
 
     const cardGrid = document.getElementById("card-grid")
 
-    cardInstancesArr.sort(() => Math.random() - 0.5);
-    console.log(cardInstancesArr);
+    cardInstancesArr.sort(() => Math.random() - 0.5); // create a randomized order to display the cards
     cardInstancesArr.forEach(cardProperty => {
 
         const cardButton = document.createElement("button");
@@ -207,14 +204,6 @@ function createCards() {
 
     })
 
-}
-
-/**
- * At the start of the game randomly choose 
- */
-function shuffle() {
-    //Randomly indexes the cards on the board so they arent in the same
-    //place each game instance
 }
 
 /**
@@ -280,15 +269,15 @@ function generateTeamWords() {
         notInTeam2List = !team2.words.includes(word);
         notInWildcardList = !wildCardList.includes(word);
         // console.log(wordIndex);
-        if (notInTeam1List && notInTeam2List && counter < team1.score) { //append to team1 list while the counter is less than team1's score 
+        if (notInTeam1List && counter < 9) { //append to team1 list while the counter is less than team1's score 
             team1.appendWord(word);
             counter++;
         }
-        else if (notInTeam1List && notInTeam2List && counter < team2.score + team1.score) {
+        else if (notInTeam2List && counter >= 9 && counter < 17) {
             team2.appendWord(word);
             counter++;
         }
-        else if(notInTeam1List && notInTeam2List && notInWildcardList) {
+        else if(notInWildcardList && counter >= 17) {
             wildCardList.push(word);
             counter++;
         }
