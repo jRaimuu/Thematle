@@ -25,23 +25,23 @@
             "weight": 0.12
         },
         {
-            "word": "diagnosis",
+            "word": "check",
             "weight": 0.14
         },
         {
-            "word": "pharmacy",
+            "word": "pill",
             "weight": 0.16
         },
         {
-            "word": "stethoscope",
+            "word": "blood",
             "weight": 0.18
         },
         {
-            "word": "ambulance",
+            "word": "siren",
             "weight": 0.2
         },
         {
-            "word": "injection",
+            "word": "inject",
             "weight": 0.22
         },
         {
@@ -53,7 +53,7 @@
             "weight": 0.26
         },
         {
-            "word": "patient",
+            "word": "visit",
             "weight": 0.28
         },
         {
@@ -69,7 +69,7 @@
             "weight": 0.34
         },
         {
-            "word": "television",
+            "word": "vain",
             "weight": 0.36
         },
         {
@@ -85,7 +85,7 @@
             "weight": 0.45
         },
         {
-            "word": "keyboard",
+            "word": "arm",
             "weight": 0.5
         },
         {
@@ -127,6 +127,110 @@
         {
             "word": "mirror",
             "weight": 1.0
+        },
+        {
+            "word": "disk",
+            "weight": 0.7
+        },
+        {
+            "word": "length",
+            "weight": 0.7
+        },
+        {
+            "word": "add",
+            "weight": 0.7
+        },
+        {
+            "word": "lemon",
+            "weight": 0.7
+        },
+        {
+            "word": "plane",
+            "weight": 0.7
+        },
+        {
+            "word": "cloud",
+            "weight": 0.7
+        },
+        {
+            "word": "bulb",
+            "weight": 0.80
+        },
+        {
+            "word": "dirt",
+            "weight": 0.80
+        },
+        {
+            "word": "youth",
+            "weight": 0.80
+        },
+        {
+            "word": "pig",
+            "weight": 0.80
+        },
+        {
+            "word": "city",
+            "weight": 0.80
+        },
+        {
+            "word": "nation",
+            "weight": 0.80
+        },
+        {
+            "word": "map",
+            "weight": 0.80
+        },
+        {
+            "word": "queen",
+            "weight": 0.80
+        },
+        {
+            "word": "joke",
+            "weight": 0.6
+        },
+        {
+            "word": "bat",
+            "weight": 0.6
+        },
+        {
+            "word": "grain",
+            "weight": 0.6
+        },
+        {
+            "word": "meat",
+            "weight": 0.6
+        },
+        {
+            "word": "crank",
+            "weight": 0.6
+        },
+        {
+            "word": "unit",
+            "weight": 0.6
+        },
+        {
+            "word": "pipe",
+            "weight": 0.7
+        },
+        {
+            "word": "cabinet",
+            "weight": 0.5
+        },
+        {
+            "word": "law",
+            "weight": 0.5
+        },
+        {
+            "word": "tail",
+            "weight": 0.5
+        },
+        {
+            "word": "salad",
+            "weight": 0.5
+        },
+        {
+            "word": "night",
+            "weight": 0.5
         }
     ],
     "NatureList": [

@@ -33,11 +33,11 @@ class Team {
 
 class Card {
     constructor(id, type, word, state, iconPath) {
-        this.id = id;
-        this.type = type;
-        this.word = word;
-        this.guessed = state;
-        this.icon = iconPath;
+        this.cardID = id;
+        this.cardType = type;
+        this.cardWord = word;
+        this.cardGuessed = state;
+        this.cardIcon = iconPath;
     }
 
     setCardIcon(iconPath) {
@@ -68,6 +68,8 @@ class GameContext {
 let themePacks;
 let wordList = [];
 let weightList = [];
+let cardInstancesArr = [];
+let wildCardList = [];
 let team1 = new Team("Orange", "Alice", "Charlie", 9);
 let team2 = new Team("Purple", "Bob", "Dale", 8);
 const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
@@ -120,6 +122,10 @@ window.addEventListener('load', async function () {
  * #TODO: Gamestate
  * after each button press, we set the game state and whoseturn
  * 
+ * If game state == ex.agent && turn == orange
+ * them change the classname for each type to show orange, by selecting cards with type: "orange" 
+ * 
+ * 
  */
 
 
@@ -147,6 +153,7 @@ async function initializeGame() {
     // shuffle()
     unpackageThemePack("MedicalList");
     generateTeamWords();
+    createCards();
 
 
 }
@@ -154,6 +161,52 @@ async function initializeGame() {
 function createCards() {
     //when making the card instance, include the default icon
     //Card(id, type, "word", false, "./assets/unknown-mask.png") //creates an instance of the card
+    
+    //TODO find a move efficient way to loop and also add words to wild cards
+    //Have unique ids for each cards
+    //randomize cards
+    const cardType = [
+        { name: "team1", words: team1.words, count: 9 },
+        { name: "team2", words: team2.words, count: 8 },
+        { name: "neutral", words: wildCardList, count: 8 }
+    ];
+    
+    let uniqueID = 0;
+    for (const type of cardType) {
+        for (let i = 0; i < type.count; i++) {
+            cardInstancesArr.push(new Card(uniqueID++, type.name, type.words[i], false, "./assets/unknown-mask.png"));
+        }
+    }
+    
+
+    const cardGrid = document.getElementById("card-grid")
+
+    cardInstancesArr.sort(() => Math.random() - 0.5);
+    console.log(cardInstancesArr);
+    cardInstancesArr.forEach(cardProperty => {
+
+        const cardButton = document.createElement("button");
+        cardButton.id = cardProperty.cardID;
+        cardButton.className = "unknown-card card-shadow h-align-card";
+        // cardElement.className = card.type
+
+        const cardImage = document.createElement("img");
+        cardImage.className = "cover";
+        cardImage.src = cardProperty.cardIcon;
+
+        const cardContent = document.createElement("div");
+        cardContent.className = "bg-wild-card-word inset-shadow";
+
+        const h3 = document.createElement("h3");
+        h3.textContent = cardProperty.cardWord;
+
+        cardContent.appendChild(h3);
+        cardButton.appendChild(cardImage);
+        cardButton.appendChild(cardContent);
+        cardGrid.appendChild(cardButton);
+
+    })
+
 }
 
 /**
@@ -218,12 +271,14 @@ function generateTeamWords() {
     let counter = 0;
     let notInTeam1List;
     let notInTeam2List;
+    let notInWildcardList;
 
-    while (counter < team1.score + team2.score) {
+    while (counter < 25) {
         wordIndex = weightedRandom();
         word = wordList[wordIndex];
         notInTeam1List = !team1.words.includes(word);
         notInTeam2List = !team2.words.includes(word);
+        notInWildcardList = !wildCardList.includes(word);
         // console.log(wordIndex);
         if (notInTeam1List && notInTeam2List && counter < team1.score) { //append to team1 list while the counter is less than team1's score 
             team1.appendWord(word);
@@ -233,12 +288,17 @@ function generateTeamWords() {
             team2.appendWord(word);
             counter++;
         }
+        else if(notInTeam1List && notInTeam2List && notInWildcardList) {
+            wildCardList.push(word);
+            counter++;
+        }
         else {
             console.log("Duplicate word! generating new word");
         }
     }
     console.log("Team 1's words ", team1.getWords());
     console.log("Team 2's words ", team2.getWords());
+    console.log("Wildcard words ", wildCardList);
 }
 
 
