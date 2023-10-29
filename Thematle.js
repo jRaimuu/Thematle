@@ -23,9 +23,22 @@ class Team {
         return this.words;
     }
 
+    setScore(score) {
+        this.score = score;
+    }
+
+    getScore() {
+        return this.score;
+    }
+
+
     //Helper functions
     appendWord(word) {
         this.words.push(word);
+    }
+
+    decrementScore() {
+        this.score--;
     }
 
 
@@ -62,6 +75,34 @@ class GameContext {
         this.whoseTurn = team;
         //maybe set property whoseTurn on the team object??
     }
+
+    getWhoseTurn() {
+        return this.whoseTurn;
+    }
+
+    setgameState(state) {
+        this.gameState = state;
+    }
+
+    getgameState() {
+        return this.gameState;
+    }
+
+    setClue(word) {
+        this.clue = word;
+    }
+
+    getClue() {
+        return this.clue;
+    }
+
+    setNumberOfWords(degree) {
+        this.numberOfWords = degree;
+    }
+
+    getNumberOfWords() {
+        return this.numberOfWords;
+    }
 }
 
 //Global vars
@@ -72,6 +113,7 @@ let cardInstancesArr = [];
 let wildCardList = [];
 let team1 = new Team("Orange", "Alice", "Charlie", 9);
 let team2 = new Team("Purple", "Bob", "Dale", 8);
+let gameContext = new GameContext("team1", "decipherer", undefined, undefined);
 const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
 
 // fetch(jsonURL).then(response => {
@@ -149,33 +191,44 @@ function setupGameConfig() {
 
 async function initializeGame() {
 
-    // create cards
-    // shuffle()
-    unpackageThemePack("MedicalList");
+    //setgame state
+    unpackageThemePack("NatureList");
     generateTeamWords();
     createCards();
+    displayScores();
+}
 
+function unpackageThemePack(theme) {
 
+    // console.log("Themepacks ",themePacks);
+    tupleArr = themePacks[theme];
+    console.log(tupleArr)
+    tupleArr.forEach(element => {
+        wordList.push(element.word);
+        weightList.push(element.weight);
+    });
+
+    // return { words: wordList, weights: weightList }
 }
 
 function createCards() {
     let uniqueID = 0;
     //when making the card instance, include the default icon
     //Card(id, type, "word", false, "./assets/unknown-mask.png") //creates an instance of the card
-    
+
     const cardType = [
         { name: "team1", words: team1.words, count: 9 },
         { name: "team2", words: team2.words, count: 8 },
         { name: "neutral", words: wildCardList, count: 8 }
     ];
-    
+
     //make a new card for each of the types in the cardType array
     for (const type of cardType) {
         for (let i = 0; i < type.count; i++) {
             cardInstancesArr.push(new Card(uniqueID++, type.name, type.words[i], false, "./assets/unknown-mask.png"));
         }
     }
-    
+
 
     const cardGrid = document.getElementById("card-grid")
 
@@ -207,7 +260,7 @@ function createCards() {
 }
 
 /**
- * Picks the random item based on its weight.
+ * Picks the random item based on its weight. Lower weights correspond to words of greater association to the topic
  * source: https://dev.to/trekhleb/weighted-random-algorithm-in-javascript-1pdc
  */
 function weightedRandom() {
@@ -243,41 +296,33 @@ function updateCard() {
 
 }
 
-function unpackageThemePack(theme) {
-
-    // console.log("Themepacks ",themePacks);
-    tupleArr = themePacks[theme];
-    console.log(tupleArr)
-    tupleArr.forEach(element => {
-        wordList.push(element.word);
-        weightList.push(element.weight);
-    });
-
-    // return { words: wordList, weights: weightList }
-}
-
 function generateTeamWords() {
+    // TODO: after generating the word, add the weight to a running total that for team1 and team2
+    // Take the difference between total weight of team1 and team2 to calculate the deviation; generate a new word if the deviation is too high
+    // (i.e. team1 might have more words that are of lesser weight to team2, giving them an unfair advantage)
+
     let counter = 0;
     let notInTeam1List;
     let notInTeam2List;
     let notInWildcardList;
 
     while (counter < 25) {
-        wordIndex = weightedRandom();
-        word = wordList[wordIndex];
-        notInTeam1List = !team1.words.includes(word);
-        notInTeam2List = !team2.words.includes(word);
-        notInWildcardList = !wildCardList.includes(word);
-        // console.log(wordIndex);
-        if (notInTeam1List && counter < 9) { //append to team1 list while the counter is less than team1's score 
+        wordIndex = weightedRandom(); // call weightedRandom algorithm to generate a new word and return the index of that word
+        word = wordList[wordIndex]; // get the generated word in wordList corresponding to the generated wordIndex
+
+        notInTeam1List = !team1.words.includes(word); //checks if the generated word is NOT in team1 list
+        notInTeam2List = !team2.words.includes(word); //checks if the generated word is NOT in team2 list
+        notInWildcardList = !wildCardList.includes(word); //checks if the generated word is NOT in wildcard list
+
+        if (notInTeam1List && counter < 9) {
             team1.appendWord(word);
             counter++;
         }
-        else if (notInTeam2List && counter >= 9 && counter < 17) {
+        else if (notInTeam1List && notInTeam2List && counter >= 9 && counter < 17) {
             team2.appendWord(word);
             counter++;
         }
-        else if(notInWildcardList && counter >= 17) {
+        else if (notInTeam1List && notInTeam2List && notInWildcardList && counter >= 17) { //checks if the generated word is NOT in team1 and NOT in team 2 list & NOT in wildcard List
             wildCardList.push(word);
             counter++;
         }
@@ -290,6 +335,27 @@ function generateTeamWords() {
     console.log("Wildcard words ", wildCardList);
 }
 
+function decrementTeam1Score() {
+
+    const team1Score = document.getElementById("team1-score");
+    team1.decrementScore();
+    team1Score.textContent = team1.getScore();
+}
+
+function decrementTeam2Score() {
+    
+    const team2Score = document.getElementById("team2-score");
+    team2.decrementScore();
+    team2Score.textContent = team2.getScore();
+}
+
+function displayScores() {
+    const team2Score = document.getElementById("team2-score");
+    const team1Score = document.getElementById("team1-score");
+
+    team1Score.textContent = team1.getScore();
+    team2Score.textContent = team2.getScore();
+}
 
 /**
  * Updates the dom to show all players the clue at play
@@ -298,10 +364,28 @@ function revealClue() {
     //setContext
 }
 
+/** EVENT LISTENERS **/
 
-//When the decipherer inputs and submits clue
-// input.addEventListener('click', revealClue());
+//Clue form
+clueForm = document.getElementById("clue-form");
+clueForm.addEventListener("submit", function(event) {
+    event.preventDefault();
 
-//Updates the card graphic
-// card - i.addEventListener('click', updateCard());
+    const clueInput = document.getElementById("clue");
+    const clueDropdown = document.getElementById("clue-dropdown");
 
+    const clueWord = clueInput.value;
+    const clueDegree = clueDropdown.value;
+
+    gameContext.
+    
+    
+    
+    
+    changeGameState()
+});
+
+function changeGameState () {
+    
+
+}

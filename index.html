@@ -39,7 +39,7 @@ UCID: 30150737 -->
                     <div class="orange-guessed-card card-shadow h-align-card inset-shadow m-square">
                         <img class="cover" src="./assets/noun-boss-990401.png">
                     </div>
-                    <p class="score">8</p>
+                    <p id="team1-score" class="score"></p>
                 </div>
                 <div class="m-square">
                     <p class="o-role-font">DECIPHERER</p>
@@ -53,7 +53,7 @@ UCID: 30150737 -->
                     <div class="purple-guessed-card card-shadow h-align-card inset-shadow m-square">
                         <img class="cover" src="./assets/noun-child-990391.png">
                     </div>
-                    <p class="score">7</p>
+                    <p id="team2-score" class="score"></p>
                 </div>
                 <div class="m-square">
                     <p class="p-role-font">DECIPHERER</p>
@@ -232,7 +232,7 @@ UCID: 30150737 -->
 
             <!-- Clue Input -->
             <div class="flex-col input-content">
-                <form>
+                <form id = "clue-form">
                     <input class="input-font input-style card-shadow" type="text" id="clue" name="decipherer-clue"
                         placeholder="Type your clue here">
                     <select class="h-align input-font card-shadow" id="clue-dropdown" name="clue-degree">
