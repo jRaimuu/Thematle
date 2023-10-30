@@ -60,6 +60,22 @@ class Card {
     setCardWord(word) {
         this.word = word;
     }
+
+    getCardID() {
+        return this.cardID;
+    }
+
+    getCardType() {
+        return this.cardType;
+    }
+
+    setCardGuessed(state) {
+        this.cardGuessed = state;
+    }
+
+    getCardGuesed() {
+        return this.cardGuessed;
+    }
 }
 
 class GameContext {
@@ -133,6 +149,7 @@ const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
 //     console.error('Error fetching JSON:', error);
 // });
 
+
 async function fetchData() {
     try {
         const response = await fetch(jsonURL);
@@ -148,9 +165,10 @@ async function fetchData() {
 
 
 
-window.addEventListener('load', async function () {
-    await fetchData();
-    initializeGame();
+window.addEventListener('load', function () {
+    fetchData().then(() => {
+        initializeGame();
+    })
 });
 
 
@@ -189,7 +207,7 @@ function setupGameConfig() {
     //Dismount the modal and call initializeGame
 }
 
-async function initializeGame() {
+function initializeGame() {
 
     //setgame state
     unpackageThemePack("NatureList");
@@ -230,22 +248,30 @@ function createCards() {
     }
 
 
-    const cardGrid = document.getElementById("card-grid")
+    shuffle();// create a randomized order to display the cards
 
-    cardInstancesArr.sort(() => Math.random() - 0.5); // create a randomized order to display the cards
     cardInstancesArr.forEach(cardProperty => {
+        const cardGrid = document.getElementById("card-grid");
+        let cardButton = document.createElement("button");
+        let cardContent = document.createElement("div");
 
-        const cardButton = document.createElement("button");
         cardButton.id = cardProperty.cardID;
-        cardButton.className = "unknown-card card-shadow h-align-card";
-        // cardElement.className = card.type
+        if (cardProperty.cardType == "team1") {
+            cardButton.className = "orange-guessed-card card-shadow h-align-card";
+            cardContent.className = "bg-orange-card-word inset-shadow";
+        }
+        else if (cardProperty.cardType == "team2") {
+            cardButton.className = "purple-guessed-card card-shadow h-align-card";
+            cardContent.className = "bg-purple-card-word inset-shadow";
+        }
+        else {
+            cardButton.className = "unknown-card card-shadow h-align-card";
+            cardContent.className = "bg-wild-card-word inset-shadow";
+        }
 
         const cardImage = document.createElement("img");
         cardImage.className = "cover";
         cardImage.src = cardProperty.cardIcon;
-
-        const cardContent = document.createElement("div");
-        cardContent.className = "bg-wild-card-word inset-shadow";
 
         const h3 = document.createElement("h3");
         h3.textContent = cardProperty.cardWord;
@@ -256,7 +282,27 @@ function createCards() {
         cardGrid.appendChild(cardButton);
 
     })
+}
 
+
+function shuffle() {
+    let randomIndex;
+    let currentIndex = cardInstancesArr.length;
+
+    // While there is still cards to shuffle
+    while (currentIndex > 0) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // ..and swap it with the current element.
+        [cardInstancesArr[currentIndex], cardInstancesArr[randomIndex]] = [
+            cardInstancesArr[randomIndex], cardInstancesArr[currentIndex]
+        ];
+    }
+
+    return cardInstancesArr;
 }
 
 /**
@@ -289,10 +335,41 @@ function weightedRandom() {
  * Function to update the cards contents including the image, color, and word
  * depending on the context
  */
-function updateCard() {
+function updateCard(team) {
+    let cardButton, cardContent, cardList;
     //get the card at that index or with that id, depending on the implementation
-    setCardIcon("path");
+    // setCardIcon("path");
     //dismount word div and h3
+
+    cardList = cardInstancesArr.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
+
+    //get element by id i
+    cardList.forEach(cardProperty => {
+
+        cardButton = document.getElementById(cardProperty.getCardID());
+        cardContent = cardButton.querySelector("div");
+
+        if (cardProperty.getCardType() == "team1") {
+            cardButton.classList.remove("orange-guessed-card");
+            cardContent.classList.remove("bg-orange-card-word");
+        }
+        else {
+            cardButton.classList.remove("purple-guessed-card");
+            cardContent.classList.remove("bg-purple-card-word");
+        }
+
+        cardButton.classList.add("unknown-card");
+        cardContent.classList.add("bg-wild-card-word");
+        console.log(cardButton);
+    });
+
+    //comapare id to cardInstance id
+    //if the cardInstnce id == id then get the color of that cardInstance
+    //if the color is this
+
+   
+
+
 
 }
 
@@ -343,7 +420,7 @@ function decrementTeam1Score() {
 }
 
 function decrementTeam2Score() {
-    
+
     const team2Score = document.getElementById("team2-score");
     team2.decrementScore();
     team2Score.textContent = team2.getScore();
@@ -364,28 +441,55 @@ function revealClue() {
     //setContext
 }
 
+function changeGameState() {
+    let turn;
+
+    gameContext.setgameState("agent");
+
+    turn = gameContext.getWhoseTurn();
+    updateCard(turn);
+    // if(turn == "orange") {
+    // }
+    // else {
+    //     updateCard(trun);
+    // }
+
+
+    console.log(gameContext.getgameState());
+
+}
+
+
+
 /** EVENT LISTENERS **/
 
 //Clue form
-clueForm = document.getElementById("clue-form");
-clueForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+let clueForm;
 
-    const clueInput = document.getElementById("clue");
-    const clueDropdown = document.getElementById("clue-dropdown");
+document.addEventListener('DOMContentLoaded', function () {
+    clueForm = document.getElementById("clue-form");
+    clueForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    const clueWord = clueInput.value;
-    const clueDegree = clueDropdown.value;
+        const clueInput = document.getElementById("clue");
+        const clueDropdown = document.getElementById("clue-dropdown");
 
-    gameContext.
-    
-    
-    
-    
-    changeGameState()
+        const clueWord = clueInput.value;
+        const clueDegree = parseInt(clueDropdown.value);
+
+        gameContext.setClue(clueWord);
+        gameContext.setNumberOfWords(clueDegree);
+
+        console.log(gameContext.getClue());
+        console.log(gameContext.getNumberOfWords());
+
+        changeGameState();
+
+        //change the color of the cards for the agent
+        //display the clue and hide the input
+
+
+    });
 });
 
-function changeGameState () {
-    
 
-}
