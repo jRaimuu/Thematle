@@ -5,8 +5,8 @@
 // UCID: 30150737 
 
 class Team {
-    constructor(color, decipherer, agent, score) {
-        this.color = color;
+    constructor(teamName, decipherer, agent, score) {
+        this.teamName = teamName;
         this.decipherer = decipherer;
         this.agent = agent;
         this.words = [];
@@ -15,6 +15,15 @@ class Team {
     }
 
     //Getter and Setters
+
+    setTeamName(name) {
+        this.teamName = name;
+    }
+
+    getTeamName() {
+        return this.teamName;
+    }
+
     setWords(words) {
         this.words = words;
     }
@@ -127,9 +136,9 @@ let wordList = [];
 let weightList = [];
 let cardInstancesArr = [];
 let wildCardList = [];
-let team1 = new Team("Orange", "Alice", "Charlie", 9);
-let team2 = new Team("Purple", "Bob", "Dale", 8);
-let gameContext = new GameContext("team1", "decipherer", undefined, undefined);
+let team1 = new Team("team1", "Alice", "Charlie", 9);
+let team2 = new Team("team2", "Bob", "Dale", 8);
+let gameContext = new GameContext(team1, "decipherer", undefined, undefined);
 const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
 
 // fetch(jsonURL).then(response => {
@@ -213,6 +222,7 @@ function initializeGame() {
     unpackageThemePack("NatureList");
     generateTeamWords();
     createCards();
+    createCardListeners();
     displayScores();
 }
 
@@ -235,9 +245,10 @@ function createCards() {
     //Card(id, type, "word", false, "./assets/unknown-mask.png") //creates an instance of the card
 
     const cardType = [
-        { name: "team1", words: team1.words, count: 9 },
-        { name: "team2", words: team2.words, count: 8 },
-        { name: "neutral", words: wildCardList, count: 8 }
+        { name: team1, words: team1.words, count: 9 },
+        { name: team2, words: team2.words, count: 8 },
+        { name: "neutral", words: wildCardList, count: 7 },
+        { name: "bomb", words: wildCardList, count: 1 }
     ];
 
     //make a new card for each of the types in the cardType array
@@ -246,7 +257,6 @@ function createCards() {
             cardInstancesArr.push(new Card(uniqueID++, type.name, type.words[i], false, "./assets/unknown-mask.png"));
         }
     }
-
 
     shuffle();// create a randomized order to display the cards
 
@@ -257,13 +267,17 @@ function createCards() {
 
         cardButton.id = cardProperty.cardID;
 
-        if (cardProperty.cardType == "team1") {
+        if (cardProperty.cardType == team1) {
             cardButton.className = "orange-guessed-card card-shadow h-align-card";
             cardContent.className = "bg-orange-card-word inset-shadow";
         }
-        else if (cardProperty.cardType == "team2") {
+        else if (cardProperty.cardType == team2) {
             cardButton.className = "purple-guessed-card card-shadow h-align-card";
             cardContent.className = "bg-purple-card-word inset-shadow";
+        }
+        else if (cardProperty.cardType == "bomb") {
+            cardButton.className = "black-guessed-card card-shadow h-align-card";
+            cardContent.className = "bg-black-card-word inset-shadow";
         }
         else {
             cardButton.className = "wild-guessed-card card-shadow h-align-card";
@@ -286,10 +300,30 @@ function createCards() {
 }
 
 /**
+* Event listener for each button on the grid
+*/
+function createCardListeners() {
+
+    cardInstancesArr.forEach(cardInstance => {
+
+        const cardID = cardInstance.getCardID();
+        const cardButton = document.getElementById(cardID);
+
+        cardButton.addEventListener("click", () => {
+            const cardType = cardInstance.getCardType();
+            console.log("Card instance: ", cardType);
+            updateTeamScore(cardType);
+            // changeCardState(cardType);
+        });
+    });
+
+}
+
+/**
  * Function to update the cards contents including the image, color, and word
  * depending on the context
  */
-function updateCard(team) {
+function changeGameViewAgent(team) {
     let cardButton, cardContent, cardList;
     //get the card at that index or with that id, depending on the implementation
     // setCardIcon("path");
@@ -303,16 +337,20 @@ function updateCard(team) {
         cardButton = document.getElementById(cardProperty.getCardID());
         cardContent = cardButton.querySelector("div");
 
-        if (cardProperty.getCardType() == "team1") {
+        if (cardProperty.getCardType() == team1) {
             cardButton.classList.remove("orange-guessed-card");
             cardContent.classList.remove("bg-orange-card-word");
         }
-        else {
+        else if (cardProperty.getCardType() == team2) {
             cardButton.classList.remove("purple-guessed-card");
             cardContent.classList.remove("bg-purple-card-word");
         }
+        else {
+            cardButton.classList.remove("black-guessed-card");
+            cardContent.classList.remove("bg-black-card-word");
+        }
 
-        cardButton.classList.add("unknown-card");
+        cardButton.classList.add("unknown-card"); //maybe change to wild-card-gueesed
         cardContent.classList.add("bg-wild-card-word");
         console.log(cardButton);
     });
@@ -333,15 +371,15 @@ function revealClue() {
 
     const bgDegree = document.createElement("div");
     bgDegree.className = "bg-show-degree"
-    
+
     const textClue = document.createElement("h4");
     textClue.id = "clue-text";
     textClue.textContent = gameContext.getClue();
-    
+
     const textDegree = document.createElement("h4");
     textDegree.id = "clue-text";
     textDegree.textContent = gameContext.getNumberOfWords();
-    
+
     bgClue.appendChild(textClue);
     bgDegree.appendChild(textDegree);
     surroundClue.appendChild(bgClue);
@@ -438,27 +476,93 @@ function generateTeamWords() {
 
 function changeGameState() {
 
-    gameContext.setgameState("agent"); //Set the game state to the agent
 
+    /**TODO
+     * add new param called state
+     * if (state == decipherer) do below code
+    */
+
+    gameContext.setgameState("agent"); //Set the game state to the agent
     const turn = gameContext.getWhoseTurn();
-    updateCard(turn); //update the cards to display as they should for the agents view
+    changeGameViewAgent(turn); //update the cards to display as they should for the agents view
     revealClue();
+
+    /**TODO
+     * else (state == agent) do below code
+     */
+    // changeGameViewDecipherer();
 
     console.log(gameContext.getgameState());
 }
 
-function decrementTeam1Score() {
+function changeCardState(cardID) {
 
-    const team1Score = document.getElementById("team1-score");
-    team1.decrementScore();
-    team1Score.textContent = team1.getScore();
+    cardID.setCardGuessed(true); //set the card as guessed
+
+    if (cardType == "team2") {
+        //decrement score
+        //change card graphic
+    }
+    else if (cardType == "team2") {
+        // 
+    }
+    else if (cardType == "bomb") {
+        //change card graphic to bomb
+        //decrement score to zero
+        //check score
+    }
+    else {
+        //neutral wild card
+
+    }
+
+    //update score
+
+
+    //update card graphic
 }
 
-function decrementTeam2Score() {
+/**
+ * Decrements the score depending on the team
+ * @param {String} type - type of team
+ */
+function updateTeamScore(type) {
 
-    const team2Score = document.getElementById("team2-score");
-    team2.decrementScore();
-    team2Score.textContent = team2.getScore();
+    if (type == "bomb") {
+        const activeTeam = gameContext.getWhoseTurn();
+        const score = activeTeam.getScore();
+        for (let i = score; i > 0; i--) {
+            decrementTeamScore(activeTeam);
+        }
+        displayScores();
+        checkScore(activeTeam);
+    }
+    else if (type == team1 || type == team2) {
+        decrementTeamScore(type);
+        displayScores();
+        checkScore(type);
+    }
+}
+
+// function decrementTeam1Score() {
+//     const team1Score = document.getElementById("team1-score");
+//     team1.decrementScore();
+//     team1Score.textContent = team1.getScore();
+// }
+
+function decrementTeamScore(team) {
+    scoreID = team.getTeamName() + "-score"; //create the id of the score container by concat teamName with -score
+    const teamScore = document.getElementById(scoreID); //get the element with that score ID
+    team.decrementScore(); //decrement the score of that team
+    teamScore.textContent = team.getScore(); //set the new text content of the score
+}
+
+function checkScore(team) {
+    const score = team.getScore();
+
+    if (score == 0) {
+        gameOver();
+    }
 }
 
 function displayScores() {
@@ -467,6 +571,10 @@ function displayScores() {
 
     team1Score.textContent = team1.getScore();
     team2Score.textContent = team2.getScore();
+}
+
+function gameOver() {
+    console.log("game over");
 }
 
 
@@ -478,6 +586,10 @@ function displayScores() {
 let clueForm;
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    /**
+     * Event listener for input and dropdown form
+     */
     clueForm = document.getElementById("clue-form");
     clueForm.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -491,16 +603,15 @@ document.addEventListener('DOMContentLoaded', function () {
         gameContext.setClue(clueWord);
         gameContext.setNumberOfWords(clueDegree);
 
-        console.log(gameContext.getClue());
-        console.log(gameContext.getNumberOfWords());
+        // console.log(gameContext.getClue());
+        // console.log(gameContext.getNumberOfWords());
 
         changeGameState();
 
         //change the color of the cards for the agent
         //display the clue and hide the input
-
-
     });
+
 });
 
 

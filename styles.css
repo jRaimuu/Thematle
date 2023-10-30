@@ -126,7 +126,8 @@ body {
 
 .bg-wild-card-word,
 .bg-orange-card-word,
-.bg-purple-card-word {
+.bg-purple-card-word,
+.bg-black-card-word {
     background-color: #602b6d;
     border: 1px solid #602b6d;
     border-radius: 5px;
@@ -143,6 +144,11 @@ body {
 .bg-orange-card-word {
     background-color: #d3581f;
     border: 1px solid #d3581f;
+}
+
+.bg-black-card-word {
+    background-color: #1f3860;
+    border: 1px solid #1f3860;
 }
 
 .score {
