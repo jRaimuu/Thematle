@@ -173,9 +173,16 @@ body {
     color: white;
 }
 
-h3 {
+h3, h4 {
     font-family: 'Segoe UI';
     color: white;
+}
+
+h4 {
+    font-size: x-large;
+    color: black;
+    /* padding-left: 10px; */
+    text-align: center;
 }
 
 .card-shadow {
@@ -220,11 +227,19 @@ h3 {
     border-bottom: 1px solid transparent;
 }
 
+.orange-guessed-card:hover {
+    border: 3px solid #fadb4f;
+}
+
 .purple-guessed-card {
     background: linear-gradient(-45deg, #3f31ff, #7041ff);
     border: 1px solid #8a5fff;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
+}
+
+.purple-guessed-card:hover {
+    border: 3px solid #8a5fff;
 }
 
 .wild-guessed-card {
@@ -234,12 +249,23 @@ h3 {
     border-bottom: 1px solid transparent;
 }
 
+.wild-guessed-card:hover, .unknown-card:hover {
+    border: 3px solid #892f63;
+}
+
 .black-guessed-card {
     background: linear-gradient(-45deg, #213555, #202231);
     border: 1px solid #4F709C;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
 }
+
+.black-guessed-card:hover {
+    border: 3px solid #4F709C;
+}
+
+
+
 
 .inset-shadow {
     box-shadow:
@@ -261,7 +287,9 @@ h3 {
 
 .input-style,
 #clue-dropdown,
-.submit-btn {
+.submit-btn,
+.bg-show-clue,
+.bg-show-degree {
     width: 15vw;
     background-color: white;
     border: none;
@@ -285,6 +313,31 @@ h3 {
     border: 1px solid #787878;
     margin-left: 10px;
 }
+
+.bg-show-clue {
+    /* width: 15vw; */
+    width: fit-content;
+    padding-left: 0px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+    
+}
+
+.bg-show-degree {
+    width: 50px;
+    padding-left: 0px;
+    text-align: center;
+}
+
+.margin-auto {
+    margin: auto;
+}
+
+/* .text-show-clue {
+    
+} */
 
 footer {
     text-align: center;

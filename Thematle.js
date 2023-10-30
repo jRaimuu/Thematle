@@ -256,6 +256,7 @@ function createCards() {
         let cardContent = document.createElement("div");
 
         cardButton.id = cardProperty.cardID;
+
         if (cardProperty.cardType == "team1") {
             cardButton.className = "orange-guessed-card card-shadow h-align-card";
             cardContent.className = "bg-orange-card-word inset-shadow";
@@ -265,7 +266,7 @@ function createCards() {
             cardContent.className = "bg-purple-card-word inset-shadow";
         }
         else {
-            cardButton.className = "unknown-card card-shadow h-align-card";
+            cardButton.className = "wild-guessed-card card-shadow h-align-card";
             cardContent.className = "bg-wild-card-word inset-shadow";
         }
 
@@ -284,6 +285,70 @@ function createCards() {
     })
 }
 
+/**
+ * Function to update the cards contents including the image, color, and word
+ * depending on the context
+ */
+function updateCard(team) {
+    let cardButton, cardContent, cardList;
+    //get the card at that index or with that id, depending on the implementation
+    // setCardIcon("path");
+    //dismount word div and h3
+
+    cardList = cardInstancesArr.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
+
+    //get element by id i
+    cardList.forEach(cardProperty => {
+
+        cardButton = document.getElementById(cardProperty.getCardID());
+        cardContent = cardButton.querySelector("div");
+
+        if (cardProperty.getCardType() == "team1") {
+            cardButton.classList.remove("orange-guessed-card");
+            cardContent.classList.remove("bg-orange-card-word");
+        }
+        else {
+            cardButton.classList.remove("purple-guessed-card");
+            cardContent.classList.remove("bg-purple-card-word");
+        }
+
+        cardButton.classList.add("unknown-card");
+        cardContent.classList.add("bg-wild-card-word");
+        console.log(cardButton);
+    });
+}
+
+/**
+ * Updates the dom to show all players the clue at play
+ */
+function revealClue() {
+    let clueContainer = document.getElementById("clue-container");
+    const oldChild = document.getElementById("clue-form");
+
+    const surroundClue = document.createElement("div");
+    surroundClue.className = "flex-row margin-auto";
+
+    const bgClue = document.createElement("div");
+    bgClue.className = "bg-show-clue";
+
+    const bgDegree = document.createElement("div");
+    bgDegree.className = "bg-show-degree"
+    
+    const textClue = document.createElement("h4");
+    textClue.id = "clue-text";
+    textClue.textContent = gameContext.getClue();
+    
+    const textDegree = document.createElement("h4");
+    textDegree.id = "clue-text";
+    textDegree.textContent = gameContext.getNumberOfWords();
+    
+    bgClue.appendChild(textClue);
+    bgDegree.appendChild(textDegree);
+    surroundClue.appendChild(bgClue);
+    surroundClue.appendChild(bgDegree);
+    const newChild = surroundClue;
+    clueContainer.replaceChild(newChild, oldChild);
+}
 
 function shuffle() {
     let randomIndex;
@@ -331,52 +396,11 @@ function weightedRandom() {
     }
 }
 
-/**
- * Function to update the cards contents including the image, color, and word
- * depending on the context
- */
-function updateCard(team) {
-    let cardButton, cardContent, cardList;
-    //get the card at that index or with that id, depending on the implementation
-    // setCardIcon("path");
-    //dismount word div and h3
-
-    cardList = cardInstancesArr.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
-
-    //get element by id i
-    cardList.forEach(cardProperty => {
-
-        cardButton = document.getElementById(cardProperty.getCardID());
-        cardContent = cardButton.querySelector("div");
-
-        if (cardProperty.getCardType() == "team1") {
-            cardButton.classList.remove("orange-guessed-card");
-            cardContent.classList.remove("bg-orange-card-word");
-        }
-        else {
-            cardButton.classList.remove("purple-guessed-card");
-            cardContent.classList.remove("bg-purple-card-word");
-        }
-
-        cardButton.classList.add("unknown-card");
-        cardContent.classList.add("bg-wild-card-word");
-        console.log(cardButton);
-    });
-
-    //comapare id to cardInstance id
-    //if the cardInstnce id == id then get the color of that cardInstance
-    //if the color is this
-
-   
-
-
-
-}
 
 function generateTeamWords() {
-    // TODO: after generating the word, add the weight to a running total that for team1 and team2
+    // TODO: after generating the word, add the weight to a running total for team1 and team2
     // Take the difference between total weight of team1 and team2 to calculate the deviation; generate a new word if the deviation is too high
-    // (i.e. team1 might have more words that are of lesser weight to team2, giving them an unfair advantage)
+    // (ex. team1 might have more words that are of lesser weight to team2, giving them an unfair advantage)
 
     let counter = 0;
     let notInTeam1List;
@@ -412,6 +436,17 @@ function generateTeamWords() {
     console.log("Wildcard words ", wildCardList);
 }
 
+function changeGameState() {
+
+    gameContext.setgameState("agent"); //Set the game state to the agent
+
+    const turn = gameContext.getWhoseTurn();
+    updateCard(turn); //update the cards to display as they should for the agents view
+    revealClue();
+
+    console.log(gameContext.getgameState());
+}
+
 function decrementTeam1Score() {
 
     const team1Score = document.getElementById("team1-score");
@@ -434,30 +469,6 @@ function displayScores() {
     team2Score.textContent = team2.getScore();
 }
 
-/**
- * Updates the dom to show all players the clue at play
- */
-function revealClue() {
-    //setContext
-}
-
-function changeGameState() {
-    let turn;
-
-    gameContext.setgameState("agent");
-
-    turn = gameContext.getWhoseTurn();
-    updateCard(turn);
-    // if(turn == "orange") {
-    // }
-    // else {
-    //     updateCard(trun);
-    // }
-
-
-    console.log(gameContext.getgameState());
-
-}
 
 
 
