@@ -4,6 +4,7 @@
 // Name: Liam Sarjeant
 // UCID: 30150737 
 
+//Make new file
 class Team {
     constructor(teamName, decipherer, agent, score) {
         this.teamName = teamName;
@@ -53,6 +54,7 @@ class Team {
 
 }
 
+//Make new file
 class Card {
     constructor(id, type, word, state, iconPath) {
         this.cardID = id;
@@ -87,6 +89,7 @@ class Card {
     }
 }
 
+//Make new file
 class GameContext {
     constructor(team, state, clue, numberOfWords) {
         this.whoseTurn = team;
@@ -131,6 +134,7 @@ class GameContext {
 }
 
 //Global vars
+//#Card Class
 let coverCards = [
     "./assets/noun-boss-990401.png",
     "./assets/noun-child-990391.png",
@@ -142,33 +146,15 @@ let coverCards = [
     "./assets/noun-young-990402.png",
     "./assets/noun-old-man-990433.png"
 ]
-let themePacks;
-let wordList = [];
-let weightList = [];
-let cardInstancesArr = [];
-let wildCardList = [];
+let themePacks; //export as module
+let wordList = []; //#Word class
+let weightList = []; //#Word class
+let cardInstancesArr = []; //#Word class
+let wildCardList = []; //#Game Context class
 let team1 = new Team("team1", "Alice", "Charlie", 9);
 let team2 = new Team("team2", "Bob", "Dale", 8);
-let gameContext = new GameContext(team1, "decipherer", undefined, undefined);
+let gameContext = new GameContext(team1, "decipherer", undefined, undefined); 
 const jsonURL = 'https://jraimuu.github.io/Thematle/themePacks.json';
-
-// fetch(jsonURL).then(response => {
-//     if (!response.ok) {
-//         throw new Error('There is a problem with the network response');
-//     }
-//     return response.json();
-// }).then(data => {
-//     themePacks = data;
-//     // tuple = unpackageCards("MedicalList");
-//     // weights = tuple.weights;
-//     // words = tuple.words;
-//     // weightedRandom(words, weights);
-//     // initializeGame();
-
-// }).catch(error => {
-//     console.error('Error fetching JSON:', error);
-// });
-
 
 async function fetchData() {
     try {
@@ -210,14 +196,6 @@ window.addEventListener('load', function () {
 
 
 
-//This will store the avatar icons that will update the icons displayed next to the score
-//each time a players guesses a card
-const nextAvatar = [
-    // './assets/image1.png',
-    // './assets/image2.png',
-    // './assets/image3.png',
-];
-
 function setupGameConfig() {
     //Prompt to choose a themepack
     //Prompt to choose a team
@@ -237,6 +215,7 @@ function initializeGame() {
     displayScores();
 }
 
+//#Card class
 function unpackageThemePack(theme) {
 
     // console.log("Themepacks ",themePacks);
@@ -250,6 +229,7 @@ function unpackageThemePack(theme) {
     // return { words: wordList, weights: weightList }
 }
 
+//#Card class (make the frst part that initializes cardInstanceArr into a new function)
 function createCards() {
     let uniqueID = 0;
     //when making the card instance, include the default icon
@@ -410,6 +390,7 @@ function revealClue() {
     clueContainer.replaceChild(newChild, oldChild);
 }
 
+//#Card Class
 function shuffle() {
     let randomIndex;
     let currentIndex = cardInstancesArr.length;
@@ -455,7 +436,7 @@ function weightedRandom() {
     }
 }
 
-
+//#Word class
 function generateTeamWords() {
     // TODO: after generating the word, add the weight to a running total for team1 and team2
     // Take the difference between total weight of team1 and team2 to calculate the deviation; generate a new word if the deviation is too high
@@ -530,6 +511,7 @@ function changeCardState(cardProperty) {
     updateCardToUnknown(cardProperty);
 }
 
+//#Team Class
 /**
  * Decrements the score depending on the team
  * @param {String} type - type of team
@@ -558,6 +540,7 @@ function updateTeamScore(type) {
 //     team1Score.textContent = team1.getScore();
 // }
 
+//#Team Class
 function decrementTeamScore(team) {
     const scoreID = team.getTeamName() + "-score"; //create the id of the score container by concat teamName with -score
     const teamScore = document.getElementById(scoreID); //get the element with that score ID
@@ -565,6 +548,7 @@ function decrementTeamScore(team) {
     teamScore.textContent = team.getScore(); //set the new text content of the score
 }
 
+//#Team Class
 function checkScore(team) {
     const score = team.getScore();
 
