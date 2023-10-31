@@ -131,6 +131,17 @@ class GameContext {
 }
 
 //Global vars
+let coverCards = [
+    "./assets/noun-boss-990401.png",
+    "./assets/noun-child-990391.png",
+    "./assets/noun-gental-man-990456.png",
+    "./assets/noun-guard-990463.png",
+    "./assets/noun-police-990436.png",
+    "./assets/noun-spy-990425.png",
+    "./assets/noun-thief-3736262.png",
+    "./assets/noun-young-990402.png",
+    "./assets/noun-old-man-990433.png"
+]
 let themePacks;
 let wordList = [];
 let weightList = [];
@@ -300,60 +311,71 @@ function createCards() {
 }
 
 /**
-* Event listener for each button on the grid
-*/
-function createCardListeners() {
+ * Function to update the cards contents including the image, color, and word
+ * depending on the context
+ */
+function updateCardToGuessed(cardProperty) {
 
-    cardInstancesArr.forEach(cardInstance => {
+    let cardType = cardProperty.getCardType();
+    const cardButton = document.getElementById(cardProperty.getCardID());
+    const cardIcon = cardButton.querySelector("img");
+    const cardContent = cardButton.querySelector("div");
 
-        const cardID = cardInstance.getCardID();
-        const cardButton = document.getElementById(cardID);
+    cardButton.classList.remove("unknown-card");
+    cardContent.classList.remove("bg-wild-card-word");
 
-        cardButton.addEventListener("click", () => {
-            const cardType = cardInstance.getCardType();
-            console.log("Card instance: ", cardType);
-            updateTeamScore(cardType);
-            // changeCardState(cardType);
-        });
-    });
+    if (cardType == team1) {
+        score = cardType.getScore();
+        score = Math.abs(score) % 9;
+        cardButton.classList.add("orange-guessed-card");
+        cardContent.classList.add("bg-orange-card-word");
+        cardIcon.src = coverCards[score];
+    }
+    else if (cardType == team2) {
+        score = cardType.getScore();
+        score = Math.abs(score) % 9;
+        cardButton.classList.add("purple-guessed-card");
+        cardContent.classList.add("bg-purple-card-word");
+        cardIcon.src = coverCards[score];
+    }
+    else if (cardType == "bomb") {
+        cardButton.classList.add("black-guessed-card");
+        cardContent.classList.add("bg-black-card-word");
+        cardIcon.src = "./assets/noun-bomb-5543824.png";
+    }
+    else {
+        cardButton.classList.add("wild-guessed-card");
+        cardContent.classList.add("bg-wild-card-word");
+        cardIcon.src = "./assets/noun-scarecrow-5450686.png";
+    }
 
 }
 
 /**
- * Function to update the cards contents including the image, color, and word
- * depending on the context
+ * 
+ * @param {Card} cardProperty - the Card object for that index of cardInstanceArr
  */
-function changeGameViewAgent(team) {
-    let cardButton, cardContent, cardList;
-    //get the card at that index or with that id, depending on the implementation
-    // setCardIcon("path");
-    //dismount word div and h3
+function updateCardToUnknown(cardProperty) {
 
-    cardList = cardInstancesArr.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
+    //TODO change image back
+    const cardButton = document.getElementById(cardProperty.getCardID());
+    const cardContent = cardButton.querySelector("div");
 
-    //get element by id i
-    cardList.forEach(cardProperty => {
+    if (cardProperty.getCardType() == team1) {
+        cardButton.classList.remove("orange-guessed-card");
+        cardContent.classList.remove("bg-orange-card-word");
+    }
+    else if (cardProperty.getCardType() == team2) {
+        cardButton.classList.remove("purple-guessed-card");
+        cardContent.classList.remove("bg-purple-card-word");
+    }
+    else {
+        cardButton.classList.remove("black-guessed-card");
+        cardContent.classList.remove("bg-black-card-word");
+    }
 
-        cardButton = document.getElementById(cardProperty.getCardID());
-        cardContent = cardButton.querySelector("div");
-
-        if (cardProperty.getCardType() == team1) {
-            cardButton.classList.remove("orange-guessed-card");
-            cardContent.classList.remove("bg-orange-card-word");
-        }
-        else if (cardProperty.getCardType() == team2) {
-            cardButton.classList.remove("purple-guessed-card");
-            cardContent.classList.remove("bg-purple-card-word");
-        }
-        else {
-            cardButton.classList.remove("black-guessed-card");
-            cardContent.classList.remove("bg-black-card-word");
-        }
-
-        cardButton.classList.add("unknown-card"); //maybe change to wild-card-gueesed
-        cardContent.classList.add("bg-wild-card-word");
-        console.log(cardButton);
-    });
+    cardButton.classList.add("unknown-card"); //maybe change to wild-card-gueesed
+    cardContent.classList.add("bg-wild-card-word");
 }
 
 /**
@@ -399,7 +421,7 @@ function shuffle() {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
 
-        // ..and swap it with the current element.
+        // ...and swap it with the current element.
         [cardInstancesArr[currentIndex], cardInstancesArr[randomIndex]] = [
             cardInstancesArr[randomIndex], cardInstancesArr[currentIndex]
         ];
@@ -428,7 +450,6 @@ function weightedRandom() {
     for (let wordIndex = 0; wordIndex < wordList.length; wordIndex += 1) {
         //if the weight at index[i] >= random float
         if (cumulativeWeights[wordIndex] >= randomNumber) {
-            // console.log("Generated word: ", wordList[wordIndex]);
             return wordIndex;
         }
     }
@@ -484,7 +505,12 @@ function changeGameState() {
 
     gameContext.setgameState("agent"); //Set the game state to the agent
     const turn = gameContext.getWhoseTurn();
-    changeGameViewAgent(turn); //update the cards to display as they should for the agents view
+
+    const cardList = cardInstancesArr.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
+    cardList.forEach(cardProperty => {
+        updateCardToUnknown(cardProperty); //update the cards to display as they should for the agents view
+    });
+
     revealClue();
 
     /**TODO
@@ -495,31 +521,13 @@ function changeGameState() {
     console.log(gameContext.getgameState());
 }
 
-function changeCardState(cardID) {
-
-    cardID.setCardGuessed(true); //set the card as guessed
-
-    if (cardType == "team2") {
-        //decrement score
-        //change card graphic
-    }
-    else if (cardType == "team2") {
-        // 
-    }
-    else if (cardType == "bomb") {
-        //change card graphic to bomb
-        //decrement score to zero
-        //check score
-    }
-    else {
-        //neutral wild card
-
-    }
-
-    //update score
-
-
-    //update card graphic
+//TODO: make a function to change the card graphic depending on the cardType
+//Merge this with changeGameViewAgent so that you can just change the card more modularly
+//As an example, refer to decrementScore, where you just pass in the team, and depending on the
+//team it changes color
+function changeCardState(cardProperty) {
+    cardProperty.setCardGuessed(true); //set the card as guessed
+    updateCardToUnknown(cardProperty);
 }
 
 /**
@@ -551,7 +559,7 @@ function updateTeamScore(type) {
 // }
 
 function decrementTeamScore(team) {
-    scoreID = team.getTeamName() + "-score"; //create the id of the score container by concat teamName with -score
+    const scoreID = team.getTeamName() + "-score"; //create the id of the score container by concat teamName with -score
     const teamScore = document.getElementById(scoreID); //get the element with that score ID
     team.decrementScore(); //decrement the score of that team
     teamScore.textContent = team.getScore(); //set the new text content of the score
@@ -561,7 +569,11 @@ function checkScore(team) {
     const score = team.getScore();
 
     if (score == 0) {
+        //current team wins
         gameOver();
+    }
+    else {
+        //other team wins
     }
 }
 
@@ -581,6 +593,26 @@ function gameOver() {
 
 
 /** EVENT LISTENERS **/
+
+/**
+* Event listener for each button on the grid
+*/
+function createCardListeners() {
+
+    cardInstancesArr.forEach(cardProperty => {
+
+        const cardID = cardProperty.getCardID();
+        const cardButton = document.getElementById(cardID);
+
+        cardButton.addEventListener("click", () => {
+            const cardType = cardProperty.getCardType();
+            cardProperty.setCardGuessed(true); //set the card as guessed
+            updateCardToGuessed(cardProperty);
+            updateTeamScore(cardType);
+        });
+    });
+
+}
 
 //Clue form
 let clueForm;
