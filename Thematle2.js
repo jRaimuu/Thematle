@@ -66,7 +66,7 @@ window.addEventListener('load', function () {
  * check if the score is 0, if it is then that team wins
  * 
  * #TODO: Gamestate
- * after each button press, we set the game state and whoseturn
+ * after each button press, we set the game state and activeTeam
  * 
  * If game state == ex.agent && turn == orange
  * them change the classname for each type to show orange, by selecting cards with type: "orange" 
@@ -244,6 +244,19 @@ function updateCardToUnknown(cardProperty) {
     cardContent.classList.add("bg-wild-card-word");
 }
 
+function checkCardType(cardType, cardList) {
+
+    const activeTeam = gameContext.getActiveTeam();
+
+    if(cardType !== activeTeam && cardType !== "bomb" && cardType !== "neutral") {
+        gameContext.setActiveTeam(cardType); //switch the active team to other team
+        gameContext.setgameState("decipherer");  //switch the game state to agent
+        changeGameState(cardList)
+    }
+
+}
+
+
 /**
  * Updates the dom to show all players the clue at play
  */
@@ -368,22 +381,29 @@ function generateTeamWords(wordList, weightList) {
 }
 
 function changeGameState(cardList) {
-
+    const state = gameContext.getgameState();
 
     /**TODO
      * add new param called state
      * if (state == decipherer) do below code
     */
 
-    gameContext.setgameState("agent"); //Set the game state to the agent
-    const turn = gameContext.getWhoseTurn();
+    if( state == "agent") {
+        gameContext.setgameState("agent"); //Set the game state to the agent
+        const turn = gameContext.getActiveTeam();
+        const filterdcardList = cardList.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
 
-    const filterdcardList = cardList.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
-    filterdcardList.forEach(cardProperty => {
-        updateCardToUnknown(cardProperty); //update the cards to display as they should for the agents view
-    });
-
-    revealClue();
+        filterdcardList.forEach(cardProperty => {
+            updateCardToUnknown(cardProperty); //update the cards to display as they should for the agents view
+        });
+        revealClue();
+    }
+    else {
+        gameContext.setgameState("decipherer");
+        cardList.forEach(cardProperty => {
+            updateCardToGuessed(cardProperty); //update the cards to display as they should for the agents view
+        });
+    }
 
     /**TODO
      * else (state == agent) do below code
@@ -391,15 +411,7 @@ function changeGameState(cardList) {
     // changeGameViewDecipherer();
 
     console.log(gameContext.getgameState());
-}
-
-//TODO: make a function to change the card graphic depending on the cardType
-//Merge this with changeGameViewAgent so that you can just change the card more modularly
-//As an example, refer to decrementScore, where you just pass in the team, and depending on the
-//team it changes color
-function changeCardState(cardProperty) {
-    cardProperty.setCardGuessed(true); //set the card as guessed
-    updateCardToUnknown(cardProperty);
+    console.log(gameContext.getActiveTeam().getTeamName());
 }
 
 //#Team Class
@@ -410,7 +422,7 @@ function changeCardState(cardProperty) {
 function updateTeamScore(type) {
 
     if (type == "bomb") {
-        const activeTeam = gameContext.getWhoseTurn();
+        const activeTeam = gameContext.getActiveTeam();
         const score = activeTeam.getScore();
         for (let i = score; i > 0; i--) {
             decrementTeamScore(activeTeam);
@@ -478,6 +490,7 @@ function createCardListeners() {
             cardProperty.setCardGuessed(true); //set the card as guessed
             updateCardToGuessed(cardProperty);
             updateTeamScore(cardType);
+            checkCardType(cardType, cardList);
         });
     });
 
@@ -495,6 +508,7 @@ document.addEventListener('DOMContentLoaded', function () {
     clueForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
+        gameContext.setgameState("agent")
         const cardList =  gameContext.getCardInstancesArr();
         const clueInput = document.getElementById("clue");
         const clueDropdown = document.getElementById("clue-dropdown");

@@ -1,6 +1,6 @@
 export default class GameContext {
     constructor(team, state, clue, numberOfWords, wildCard, cardInstance) {
-        this.whoseTurn = team;
+        this.activeTeam = team;
         this.gameState = state; //orange decipherer, orange agent, puprle decipherer, purple agent
         this.clue = clue;
         this.numberOfWords = numberOfWords;
@@ -9,13 +9,13 @@ export default class GameContext {
 
     }
 
-    setWhoseTurn(team) {
-        this.whoseTurn = team;
+    setActiveTeam(team) {
+        this.activeTeam = team;
         //maybe set property whoseTurn on the team object??
     }
 
-    getWhoseTurn() {
-        return this.whoseTurn;
+    getActiveTeam() {
+        return this.activeTeam;
     }
 
     setgameState(state) {
