@@ -23,4 +23,18 @@ export default class Word {
     getWeightList() {
         return this.weightList;
     }
+
+    //Helper function
+
+    appendWordList(word) {
+        this.wordList.push(word);
+    }
+
+    appendWeightList(weight) {
+        this.weightList.push(weight);
+    }
+
+    // getElementAtIndex(index) {
+    //     return this.wordList[index];
+    // }
 }

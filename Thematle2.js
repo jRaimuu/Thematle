@@ -1,7 +1,7 @@
 import Card from './Card.js'
 import Team from './Team.js'
 import GameContext from './GameContext.js'
-// import Word from './Word.js'
+import Word from './Word.js'
 
 // Course: SENG 513
 // Date: Oct 1, 2023
@@ -29,8 +29,8 @@ let coverCards = [
 ]
 let themePacks; //export as module
 // let wordManager = Word([], []);
-let wordList = []; //#Word class
-let weightList = []; //#Word class
+// let wordList = []; //#Word class
+// let weightList = []; //#Word class
 let team1 = new Team("team1", "Alice", "Charlie", 9);
 let team2 = new Team("team2", "Bob", "Dale", 8);
 let gameContext = new GameContext(team1, "decipherer", undefined, undefined, [], []); 
@@ -88,8 +88,10 @@ function setupGameConfig() {
 function initializeGame() {
 
     //setgame state
-    unpackageThemePack("NatureList");
-    generateTeamWords();
+    const themePack = unpackageThemePack("NatureList");
+    const wordList = themePack.getWordList();
+    const weightList = themePack.getWeightList();
+    generateTeamWords(wordList, weightList);
     createCards();
     createCardListeners();
     displayScores();
@@ -97,16 +99,19 @@ function initializeGame() {
 
 //#Card class
 function unpackageThemePack(theme) {
-
-    // console.log("Themepacks ",themePacks);
+    const newWordList = new Word([], []);
     const tupleArr = themePacks[theme];
-    console.log(tupleArr)
+
+    console.log(tupleArr);
     tupleArr.forEach(element => {
-        wordList.push(element.word);
-        weightList.push(element.weight);
+        newWordList.appendWordList(element.word);
+        newWordList.appendWeightList(element.weight);
     });
 
-    // return { words: wordList, weights: weightList }
+    console.log(newWordList.getWordList());
+    console.log(newWordList.getWeightList());
+
+    return newWordList;
 }
 
 //#Card class (make the frst part that initializes cardInstanceArr into a new function)
@@ -293,13 +298,12 @@ function shuffle(cardList) {
 }
 
 /**
- * Picks the random item based on its weight. Lower weights correspond to words of greater association to the topic
+ * Picks the random item based on its weight. Lower weights correspond to words of greater association to the theme
  * source: https://dev.to/trekhleb/weighted-random-algorithm-in-javascript-1pdc
  */
-function weightedRandom() {
-    //RANDOM selection ALGORITHM to choose words randomly from
-    //the topics in the words object
-    //Also note that the topic will also be randomly chosen
+function weightedRandom(wordList, weightList) {
+    //Weighted Random Algorithm to choose words randomly based on weight from
+    //the wordlist
     const cumulativeWeights = [];
 
     for (let i = 0; i < weightList.length; i += 1) {
@@ -318,7 +322,7 @@ function weightedRandom() {
 }
 
 //#Word class
-function generateTeamWords() {
+function generateTeamWords(wordList, weightList) {
     // TODO: after generating the word, add the weight to a running total for team1 and team2
     // Take the difference between total weight of team1 and team2 to calculate the deviation; generate a new word if the deviation is too high
     // (ex. team1 might have more words that are of lesser weight to team2, giving them an unfair advantage)
@@ -329,27 +333,33 @@ function generateTeamWords() {
     let notInWildcardList;
 
     while (counter < 25) {
-        let wordIndex = weightedRandom(); // call weightedRandom algorithm to generate a new word and return the index of that word
-        let word = wordList[wordIndex]; // get the generated word in wordList corresponding to the generated wordIndex
+        let wordIndex = weightedRandom(wordList, weightList); // call weightedRandom algorithm to generate a new word and return the index of that word
+        let word = wordList[wordIndex] // get the generated word in wordList corresponding to the generated wordIndex
 
-        notInTeam1List = !team1.words.includes(word); //checks if the generated word is NOT in team1 list
-        notInTeam2List = !team2.words.includes(word); //checks if the generated word is NOT in team2 list
+        notInTeam1List = !team1.getWords().includes(word); //checks if the generated word is NOT in team1 list
+        notInTeam2List = !team2.getWords().includes(word); //checks if the generated word is NOT in team2 list
         notInWildcardList = !gameContext.getWildCardList().includes(word); //checks if the generated word is NOT in wildcard list
 
         if (notInTeam1List && counter < 9) {
-            team1.appendWord(word);
+            team1.appendWord(word); 
+            wordList.splice(wordIndex, 1); //remove the word from the wordList 
+            weightList.splice(wordIndex, 1); //remove the corresponding weight from the weightList
             counter++;
         }
         else if (notInTeam1List && notInTeam2List && counter >= 9 && counter < 17) {
             team2.appendWord(word);
+            wordList.splice(wordIndex, 1); //remove the word from the wordList 
+            weightList.splice(wordIndex, 1); //remove the corresponding weight from the weightList
             counter++;
         }
         else if (notInTeam1List && notInTeam2List && notInWildcardList && counter >= 17) { //checks if the generated word is NOT in team1 and NOT in team 2 list & NOT in wildcard List
             gameContext.appendWildCardList(word);
+            wordList.splice(wordIndex, 1); //remove the word from the wordList 
+            weightList.splice(wordIndex, 1); //remove the corresponding weight from the weightList
             counter++;
         }
         else {
-            console.log("Duplicate word! generating new word");
+            console.log(`Duplicate word: ${word}! generating new word`);
         }
     }
     console.log("Team 1's words ", team1.getWords());
@@ -414,12 +424,6 @@ function updateTeamScore(type) {
         checkScore(type);
     }
 }
-
-// function decrementTeam1Score() {
-//     const team1Score = document.getElementById("team1-score");
-//     team1.decrementScore();
-//     team1Score.textContent = team1.getScore();
-// }
 
 //#Team Class
 function decrementTeamScore(team) {
