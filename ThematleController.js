@@ -1,23 +1,24 @@
 import Card from './Card.js'
 import Team from './Team.js'
-import GameContext, {shuffle} from './GameContext.js'
-import Word, {weightedRandom}  from './Word.js'
+import GameContext, { shuffle } from './GameContext.js'
+import Word, { weightedRandom } from './Word.js'
 
-let coverCards = [
-    "./assets/noun-boss-990401.png",
-    "./assets/noun-child-990391.png",
-    "./assets/noun-gental-man-990456.png",
-    "./assets/noun-guard-990463.png",
-    "./assets/noun-police-990436.png",
-    "./assets/noun-spy-990425.png",
-    "./assets/noun-thief-3736262.png",
-    "./assets/noun-young-990402.png",
-    "./assets/noun-old-man-990433.png"
-]
+// let coverCards = [
+//     "./assets/noun-boss-990401.png",
+//     "./assets/noun-child-990391.png",
+//     "./assets/noun-gental-man-990456.png",
+//     "./assets/noun-guard-990463.png",
+//     "./assets/noun-police-990436.png",
+//     "./assets/noun-spy-990425.png",
+//     "./assets/noun-thief-3736262.png",
+//     "./assets/noun-young-990402.png",
+//     "./assets/noun-old-man-990433.png"
+// ]
 let team1 = new Team("team1", "Alice", "Charlie", 9);
 let team2 = new Team("team2", "Bob", "Dale", 8);
-let gameContext = new GameContext(team1, "decipherer", undefined, undefined, [], []); 
-    
+let gameContext = new GameContext(team1, "decipherer", undefined, undefined, [], []);
+const generator = iconGenerator();
+
 
 export function generateTeamWords(wordList, weightList) {
     // TODO: after generating the word, add the weight to a running total for team1 and team2
@@ -38,7 +39,7 @@ export function generateTeamWords(wordList, weightList) {
         notInWildcardList = !gameContext.getWildCardList().includes(word); //checks if the generated word is NOT in wildcard list
 
         if (notInTeam1List && counter < 9) {
-            team1.appendWord(word); 
+            team1.appendWord(word);
             wordList.splice(wordIndex, 1); //remove the word from the wordList 
             weightList.splice(wordIndex, 1); //remove the corresponding weight from the weightList
             counter++;
@@ -64,16 +65,34 @@ export function generateTeamWords(wordList, weightList) {
     console.log("Wildcard words ", gameContext.getWildCardList());
 }
 
+export function* iconGenerator() {
+    const coverCards = [
+        "./assets/noun-boss-990401.png",
+        "./assets/noun-child-990391.png",
+        "./assets/noun-gental-man-990456.png",
+        "./assets/noun-guard-990463.png",
+        "./assets/noun-police-990436.png",
+        "./assets/noun-spy-990425.png",
+        "./assets/noun-thief-3736262.png",
+        "./assets/noun-young-990402.png",
+        "./assets/noun-old-man-990433.png"
+    ];
+    let counter = 0;
+    while (counter < coverCards.length) {
+        yield coverCards[counter];
+        counter = (counter + 1) % 9;
+    }
+}
+
+
+/**Game context related functions */
+
+
 export function changeGameState(cardList) {
     const state = gameContext.getgameState();
 
-    /**TODO
-     * add new param called state
-     * if (state == decipherer) do below code
-    */
-
-    if( state == "agent") {
-        gameContext.setgameState("agent"); //Set the game state to the agent
+    if (state == "agent") {
+        console.log("State Agent");
         const turn = gameContext.getActiveTeam();
         const filterdcardList = cardList.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
 
@@ -83,28 +102,29 @@ export function changeGameState(cardList) {
         revealClue();
     }
     else {
-        gameContext.setgameState("decipherer");
+        console.log("State Decipherer");
+        const filterdcardList = cardList.filter(cardProperty => cardProperty.getCardGuesed() == true); //filter out the card that are false (i.e. dont hide the ones not yet guessed)
+
         cardList.forEach(cardProperty => {
-            updateCardToGuessed(cardProperty); //update the cards to display as they should for the decipherers view
+            updateCardToUnguessed(cardProperty);
         });
+
+        filterdcardList.forEach(cardProperty => {
+            updateCardToGuessed(cardProperty);
+        });
+        displayInput();
     }
-
-    /**TODO
-     * else (state == agent) do below code
-     */
-    // changeGameViewDecipherer();
-
-    console.log(gameContext.getgameState());
-    console.log(gameContext.getActiveTeam().getTeamName());
 }
 
 export function checkCardType(cardType, cardList) {
-
     const activeTeam = gameContext.getActiveTeam();
 
-    if(cardType !== activeTeam && cardType !== "bomb" && cardType !== "neutral") {
-        gameContext.setActiveTeam(cardType); //switch the active team to other team
+    if (cardType !== activeTeam && cardType !== "bomb") {
+        const oppositeTeam = (activeTeam === team1) ? team2 : team1 //if active team == team1 then set to team2; else team1
+        gameContext.setActiveTeam(oppositeTeam); //switch the active team to other team
         gameContext.setgameState("decipherer");  //switch the game state to agent
+        console.log("Nex team ", oppositeTeam);
+
         changeGameState(cardList)
     }
 
@@ -157,6 +177,8 @@ export function checkScore(team) {
     }
 }
 
+
+/**Dom Manipulation Related Functions */
 
 
 export function createCards() {
@@ -217,7 +239,7 @@ export function createCards() {
         cardButton.appendChild(cardContent);
         cardGrid.appendChild(cardButton);
 
-    })
+    });
 }
 
 /**
@@ -225,7 +247,6 @@ export function createCards() {
  * depending on the context
  */
 export function updateCardToGuessed(cardProperty) {
-    let score;
     let cardType = cardProperty.getCardType();
     const cardButton = document.getElementById(cardProperty.getCardID());
     const cardIcon = cardButton.querySelector("img");
@@ -235,18 +256,14 @@ export function updateCardToGuessed(cardProperty) {
     cardContent.classList.remove("bg-wild-card-word");
 
     if (cardType == team1) {
-        score = cardType.getScore();
-        score = Math.abs(score) % 9;
         cardButton.classList.add("orange-guessed-card");
         cardContent.classList.add("bg-orange-card-word");
-        cardIcon.src = coverCards[score];
+        cardIcon.src = generator.next().value;
     }
     else if (cardType == team2) {
-        score = cardType.getScore();
-        score = Math.abs(score) % 9;
         cardButton.classList.add("purple-guessed-card");
         cardContent.classList.add("bg-purple-card-word");
-        cardIcon.src = coverCards[score];
+        cardIcon.src = generator.next().value;
     }
     else if (cardType == "bomb") {
         cardButton.classList.add("black-guessed-card");
@@ -257,6 +274,34 @@ export function updateCardToGuessed(cardProperty) {
         cardButton.classList.add("wild-guessed-card");
         cardContent.classList.add("bg-wild-card-word");
         cardIcon.src = "./assets/noun-scarecrow-5450686.png";
+    }
+
+}
+
+function updateCardToUnguessed(cardProperty) {
+
+    let cardType = cardProperty.getCardType();
+    const cardButton = document.getElementById(cardProperty.getCardID());
+    const cardIcon = cardButton.querySelector("img");
+    const cardContent = cardButton.querySelector("div");
+
+    cardIcon.src = './assets/unknown-mask.png';
+
+    if (cardType == team1) {
+        cardButton.className = "orange-guessed-card card-shadow h-align-card";
+        cardContent.className = "bg-orange-card-word inset-shadow";
+    }
+    else if (cardType == team2) {
+        cardButton.className = "purple-guessed-card card-shadow h-align-card";
+        cardContent.className = "bg-purple-card-word inset-shadow";
+    }
+    else if (cardType == "bomb") {
+        cardButton.className = "black-guessed-card card-shadow h-align-card";
+        cardContent.className = "bg-black-card-word inset-shadow";
+    }
+    else {
+        cardButton.className = "wild-guessed-card card-shadow h-align-card";
+        cardContent.className = "bg-wild-card-word inset-shadow";
     }
 
 }
@@ -292,7 +337,7 @@ export function updateCardToUnknown(cardProperty) {
  * Updates the dom to show all players the clue at play
  */
 export function revealClue() {
-    let clueContainer = document.getElementById("clue-container");
+    const clueContainer = document.getElementById("clue-container");
     const oldChild = document.getElementById("clue-form");
 
     const surroundClue = document.createElement("div");
@@ -320,6 +365,51 @@ export function revealClue() {
     clueContainer.replaceChild(newChild, oldChild);
 }
 
+export function displayInput() {
+    const clueContainer = document.getElementById("clue-container");
+
+    // creating a new form element for the clue input
+    const newClueForm = document.createElement("form");
+    newClueForm.id = "clue-form";
+
+    // creatibg the input field
+    const clueInput = document.createElement("input");
+    clueInput.className = "input-font input-style card-shadow";
+    clueInput.type = "text";
+    clueInput.id = "clue";
+    clueInput.name = "decipherer-clue";
+    clueInput.placeholder = "Type your clue here";
+
+    // Create the select dropdown
+    const clueDropdown = document.createElement("select");
+    clueDropdown.className = "h-align input-font card-shadow";
+    clueDropdown.id = "clue-dropdown";
+    clueDropdown.name = "clue-degree";
+
+    // adding options to the dropdown
+    for (let i = 0; i <= 9; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        clueDropdown.appendChild(option);
+    }
+
+    // creating the submit button
+    const submitButton = document.createElement("button");
+    submitButton.className = "submit-btn input-font clue-btn card-shadow";
+    submitButton.type = "submit";
+    submitButton.textContent = "Give Clue";
+
+    newClueForm.appendChild(clueInput);
+    newClueForm.appendChild(clueDropdown);
+    newClueForm.appendChild(submitButton);
+
+    clueContainer.innerHTML = ''; // Clear the existing content
+    clueContainer.appendChild(newClueForm);
+
+    createInputListerner();
+}
+
 export function displayScores() {
     const team2Score = document.getElementById("team2-score");
     const team1Score = document.getElementById("team1-score");
@@ -338,7 +428,6 @@ export function gameOver() {
 
 
 
-
 /**
 * Event listener for each button on the grid
 */
@@ -350,30 +439,26 @@ export function createCardListeners() {
         const cardButton = document.getElementById(cardID);
 
         cardButton.addEventListener("click", () => {
-            const cardType = cardProperty.getCardType();
-            cardProperty.setCardGuessed(true); //set the card as guessed
-            updateCardToGuessed(cardProperty);
-            updateTeamScore(cardType);
-            checkCardType(cardType, cardList);
+            if (gameContext.getgameState() === "agent") {
+                const cardType = cardProperty.getCardType();
+                cardProperty.setCardGuessed(true); //set the card as guessed
+                updateCardToGuessed(cardProperty);
+                updateTeamScore(cardType);
+                checkCardType(cardType, cardList);
+            }
         });
     });
 
 }
 
-//Clue form
-let clueForm;
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    /**
-     * Event listener for input and dropdown form
-     */
+export function createInputListerner() {
+    let clueForm;
     clueForm = document.getElementById("clue-form");
     clueForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
         gameContext.setgameState("agent")
-        const cardList =  gameContext.getCardInstancesArr();
+        const cardList = gameContext.getCardInstancesArr();
         const clueInput = document.getElementById("clue");
         const clueDropdown = document.getElementById("clue-dropdown");
 
@@ -387,9 +472,39 @@ document.addEventListener('DOMContentLoaded', function () {
         // console.log(gameContext.getNumberOfWords());
 
         changeGameState(cardList);
-
-        //change the color of the cards for the agent
-        //display the clue and hide the input
     });
+}
 
-});
+//Clue form
+// let clueForm;
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     /**
+//      * Event listener for input and dropdown form
+//      */
+//     clueForm = document.getElementById("clue-form");
+//     clueForm.addEventListener("submit", function (event) {
+//         event.preventDefault();
+
+//         gameContext.setgameState("agent")
+//         const cardList = gameContext.getCardInstancesArr();
+//         const clueInput = document.getElementById("clue");
+//         const clueDropdown = document.getElementById("clue-dropdown");
+
+//         const clueWord = clueInput.value;
+//         const clueDegree = parseInt(clueDropdown.value);
+
+//         gameContext.setClue(clueWord);
+//         gameContext.setNumberOfWords(clueDegree);
+
+//         // console.log(gameContext.getClue());
+//         // console.log(gameContext.getNumberOfWords());
+
+//         changeGameState(cardList);
+
+//         //change the color of the cards for the agent
+//         //display the clue and hide the input
+//     });
+
+// });

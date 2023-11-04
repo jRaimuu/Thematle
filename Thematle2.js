@@ -70,6 +70,7 @@ function initializeGame() {
     ControllerModule.createCards();
     ControllerModule.createCardListeners();
     ControllerModule.displayScores();
+    ControllerModule.displayInput();
 }
 
 //#Card class
