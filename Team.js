@@ -1,3 +1,4 @@
+
 export default class Team {
     constructor(teamName, decipherer, agent, score) {
         this.teamName = teamName;
@@ -43,6 +44,4 @@ export default class Team {
     decrementScore() {
         this.score--;
     }
-
-
 }

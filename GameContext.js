@@ -66,3 +66,23 @@ export default class GameContext {
         this.cardInstancesArr.push(cardInstance);
     }
 }
+
+export function shuffle(cardList) {
+    let randomIndex;
+    let currentIndex = cardList.length;
+
+    // While there is still cards to shuffle
+    while (currentIndex > 0) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // ...and swap it with the current element.
+        [cardList[currentIndex], cardList[randomIndex]] = [
+            cardList[randomIndex], cardList[currentIndex]
+        ];
+    }
+
+    return cardList;
+}

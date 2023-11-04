@@ -1,5 +1,5 @@
 export default class Word {
-    constructor(word, weight, cardInstance) {
+    constructor(word, weight) {
         this.wordList = word;
         this.weightList = weight;
     }
@@ -34,7 +34,24 @@ export default class Word {
         this.weightList.push(weight);
     }
 
-    // getElementAtIndex(index) {
-    //     return this.wordList[index];
-    // }
+}
+
+export function weightedRandom(wordList, weightList) {
+    //Weighted Random Algorithm to choose words randomly based on weight from
+    //the wordlist
+    const cumulativeWeights = [];
+
+    for (let i = 0; i < weightList.length; i += 1) {
+        cumulativeWeights[i] = weightList[i] + (weightList[i - 1] || 0); //or it with zero for base case
+    }
+
+    const totalCumulativeWeight = cumulativeWeights[cumulativeWeights.length - 1];
+    const randomNumber = totalCumulativeWeight * Math.random(); //generate a random number to compare with index
+
+    for (let wordIndex = 0; wordIndex < wordList.length; wordIndex += 1) {
+        //if the weight at index[i] >= random float
+        if (cumulativeWeights[wordIndex] >= randomNumber) {
+            return wordIndex;
+        }
+    }
 }
