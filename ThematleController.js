@@ -365,12 +365,21 @@ export function revealClue() {
     textDegree.id = "clue-text";
     textDegree.textContent = gameContext.getNumberOfWords();
 
+    const endTurn = document.createElement("button");
+    endTurn.className = "end-btn input-font card-shadow";
+    endTurn.type = "submit";
+    endTurn.id = "end-turn"
+    endTurn.textContent = "End Turn";
+
     bgClue.appendChild(textClue);
     bgDegree.appendChild(textDegree);
     surroundClue.appendChild(bgClue);
     surroundClue.appendChild(bgDegree);
+    surroundClue.appendChild(endTurn);
     const newChild = surroundClue;
     clueContainer.replaceChild(newChild, oldChild);
+
+    createEndTurnListener();
 }
 
 export function displayInput() {
@@ -576,6 +585,19 @@ export function createInputListerner() {
         gameContext.setClue(clueWord);
         gameContext.setNumberOfWords(clueDegree);
 
+        changeGameState(cardList);
+    });
+}
+
+function createEndTurnListener() {
+    const cardList = gameContext.getCardInstancesArr();
+    const activeTeam = gameContext.getActiveTeam();
+    const oppositeTeam = (activeTeam === team1) ? team2 : team1 //if active team == team1 then set to team2; else team1
+
+    const button = document.getElementById("end-turn");
+    button.addEventListener('click', () => {
+        gameContext.setActiveTeam(oppositeTeam); //switch the active team to other team
+        gameContext.setgameState("decipherer");
         changeGameState(cardList);
     });
 }
