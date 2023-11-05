@@ -555,7 +555,8 @@ export function createCardListeners() {
         const cardButton = document.getElementById(cardID);
 
         cardButton.addEventListener("click", () => {
-            if (gameContext.getgameState() === "agent") {
+            //allow user to interact with the card if the game state is agent and the card has not yet been gueesed (i.e. == false)
+            if (gameContext.getgameState() === "agent" && !cardProperty.getCardGuesed()) { 
                 const cardType = cardProperty.getCardType();
                 cardProperty.setCardGuessed(true); //set the card as guessed
                 updateCardToGuessed(cardProperty);

@@ -434,5 +434,207 @@
             "word": "bass",
             "weight": 1.0
         }
+    ],
+    "HolidayList": [
+        {
+            "word": "phone",
+            "weight": 0.02
+        },
+        {
+            "word": "coffee",
+            "weight": 0.04
+        },
+        {
+            "word": "shoes",
+            "weight": 0.06
+        },
+        {
+            "word": "watch",
+            "weight": 0.08
+        },
+        {
+            "word": "keys",
+            "weight": 0.1
+        },
+        {
+            "word": "wallet",
+            "weight": 0.12
+        },
+        {
+            "word": "glasses",
+            "weight": 0.14
+        },
+        {
+            "word": "car",
+            "weight": 0.16
+        },
+        {
+            "word": "pen",
+            "weight": 0.18
+        },
+        {
+            "word": "computer",
+            "weight": 0.2
+        },
+        {
+            "word": "toothbrush",
+            "weight": 0.22
+        },
+        {
+            "word": "chair",
+            "weight": 0.24
+        },
+        {
+            "word": "umbrella",
+            "weight": 0.26
+        },
+        {
+            "word": "book",
+            "weight": 0.28
+        },
+        {
+            "word": "spoon",
+            "weight": 0.3
+        },
+        {
+            "word": "headphones",
+            "weight": 0.32
+        },
+        {
+            "word": "mug",
+            "weight": 0.34
+        },
+        {
+            "word": "tree",
+            "weight": 0.36
+        },
+        {
+            "word": "gift",
+            "weight": 0.38
+        },
+        {
+            "word": "candle",
+            "weight": 0.4
+        },
+        {
+            "word": "holiday",
+            "weight": 0.42
+        },
+        {
+            "word": "plate",
+            "weight": 0.44
+        },
+        {
+            "word": "light",
+            "weight": 0.46
+        },
+        {
+            "word": "ornament",
+            "weight": 0.48
+        },
+        {
+            "word": "stocking",
+            "weight": 0.5
+        },
+        {
+            "word": "laptop",
+            "weight": 0.52
+        },
+        {
+            "word": "fork",
+            "weight": 0.54
+        },
+        {
+            "word": "bed",
+            "weight": 0.56
+        },
+        {
+            "word": "television",
+            "weight": 0.58
+        },
+        {
+            "word": "toilet",
+            "weight": 0.6
+        },
+        {
+            "word": "socks",
+            "weight": 0.62
+        },
+        {
+            "word": "candy",
+            "weight": 0.64
+        },
+        {
+            "word": "calendar",
+            "weight": 0.66
+        },
+        {
+            "word": "hanger",
+            "weight": 0.68
+        },
+        {
+            "word": "broom",
+            "weight": 0.7
+        },
+        {
+            "word": "plant",
+            "weight": 0.72
+        },
+        {
+            "word": "microwave",
+            "weight": 0.74
+        },
+        {
+            "word": "trash",
+            "weight": 0.76
+        },
+        {
+            "word": "scissors",
+            "weight": 0.78
+        },
+        {
+            "word": "fan",
+            "weight": 0.8
+        },
+        {
+            "word": "spatula",
+            "weight": 0.82
+        },
+        {
+            "word": "santa",
+            "weight": 0.84
+        },
+        {
+            "word": "snow",
+            "weight": 0.86
+        },
+        {
+            "word": "reindeer",
+            "weight": 0.88
+        },
+        {
+            "word": "pumpkin",
+            "weight": 0.9
+        },
+        {
+            "word": "fireworks",
+            "weight": 0.92
+        },
+        {
+            "word": "costume",
+            "weight": 0.94
+        },
+        {
+            "word": "parade",
+            "weight": 0.96
+        },
+        {
+            "word": "turkey",
+            "weight": 0.98
+        },
+        {
+            "word": "fireplace",
+            "weight": 1.0
+        }
     ]
 }

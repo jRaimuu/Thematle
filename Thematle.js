@@ -1,6 +1,6 @@
 import Card from './Card.js'
 import Team from './Team.js'
-import GameContext from './GameContext.js'
+import GameContext, { shuffle } from './GameContext.js'
 import Word from './Word.js'
 import * as ControllerModule from './ThematleController.js'
 
@@ -51,6 +51,7 @@ window.addEventListener('load', function () {
     })
 });
 
+//TODO
 function setupGameConfig() {
     //Prompt to choose a themepack
     //Prompt to choose a team
@@ -61,9 +62,10 @@ function setupGameConfig() {
 }
 
 function initializeGame() {
-
-    //setgame state
-    const themePack = unpackageThemePack("NatureList");
+    const themes = ["NatureList", "MedicalList", "HolidayList"];
+    const randomTheme = themes[Math.floor(Math.random() * themes.length)]; //get random theme from json
+    console.log(randomTheme);
+    const themePack = unpackageThemePack(randomTheme);
     const wordList = themePack.getWordList();
     const weightList = themePack.getWeightList();
     ControllerModule.generateTeamWords(wordList, weightList);
@@ -74,7 +76,6 @@ function initializeGame() {
     ControllerModule.displayWhoseTurn();
 }
 
-//#Card class
 function unpackageThemePack(theme) {
     const newWordList = new Word([], []);
     const tupleArr = themePacks[theme];
