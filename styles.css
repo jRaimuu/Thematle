@@ -10,9 +10,9 @@ UCID: 30150737 */
     outline: 0;
 }
 
-body {
+/* .ibody {
     background-color: #202231;
-}
+} */
 
 .v-center {
     position: relative;
@@ -179,7 +179,8 @@ body {
     color: white;
 }
 
-h3, h4 {
+h3,
+h4 {
     font-family: 'Segoe UI';
     color: white;
 }
@@ -255,7 +256,8 @@ h4 {
     border-bottom: 1px solid transparent;
 }
 
-.wild-guessed-card:hover, .unknown-card:hover {
+.wild-guessed-card:hover,
+.unknown-card:hover {
     border: 3px solid #892f63;
 }
 
@@ -320,8 +322,11 @@ h4 {
     padding-left: 0px;
     color: white;
     background: linear-gradient(60deg, #5037ff, purple, orange);
-    border: 1px solid #787878;
     margin-left: 10px;
+}
+
+.submit-btn:hover {
+    border: 2px solid white;
 }
 
 .bg-show-clue {
@@ -344,9 +349,77 @@ h4 {
     margin: auto;
 }
 
+.align-text {
+    text-align: center;
+    align-items: center;
+}
+
+/* .whose-turn {
+    width: fit-content;
+    text-align: center;
+    margin-top: 25px;
+} */
+
+
 /* .text-show-clue {
     
 } */
+
+.background-blur,
+.hide-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #00000066;
+    backdrop-filter: blur(30px);
+}
+
+.hide-background {
+    backdrop-filter: blur(100px);
+}
+
+.hidden {
+    display: none;
+}
+
+.bruh {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    opacity: 50%;
+}
+
+.game-over-bg {
+    background-color: white;
+    min-width: 30%;
+    min-height: 32%;
+    border-radius: 25px;
+    margin: 10px;
+}
+
+.game-over-text {
+    font-family: 'Segoe UI';
+    color: white;
+    font-size: xx-large;
+    font-weight: 700;
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: static;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.glow-shadow {
+    box-shadow: 2px 3px 3px #5037ff, -2px -3px 3px #d3581f;
+}
+
+.orange-shadow {
+    box-shadow: -2px -5px 5px #d3581f;
+}
 
 footer {
     text-align: center;
@@ -364,36 +437,33 @@ footer {
     bottom: -25px;
 }
 
+.pattern,
+.pattern2 {
+    --s: 200px;
+    /* control the size */
+    --c: #23233588;
+    /* first color */
 
-
-
-/* #clue-dropdown option {
-    border-radius: 50px;
-} */
-
-
-.ibody {
-    --s: 50px;
-    --c: #202231;
-    --_s: calc(2*var(--s)) calc(2*var(--s));
-    --_g: 35.36% 35.36% at;
-    --_c: #0000 66%, #1e202e88 68% 70%, #0000 72%;
+    --_g: #0000 8%, var(--c) 0 17%, #0000 0 58%;
     background:
-        radial-gradient(var(--_g) 100% 25%, var(--_c)) var(--s) var(--s)/var(--_s),
-        radial-gradient(var(--_g) 0 75%, var(--_c)) var(--s) var(--s)/var(--_s),
-        radial-gradient(var(--_g) 100% 25%, var(--_c)) 0 0/var(--_s),
-        radial-gradient(var(--_g) 0 75%, var(--_c)) 0 0/var(--_s),
-        repeating-conic-gradient(var(--c) 0 25%, #0000 0 50%) 0 0/var(--_s),
-        radial-gradient(var(--_c)) 0 calc(var(--s)/2)/var(--s) var(--s) var(--c);
-    background-attachment: fixed;
+        linear-gradient(135deg, #0000 20.5%, var(--c) 0 29.5%, #0000 0) 0 calc(var(--s)/4),
+        linear-gradient(45deg, var(--_g)) calc(var(--s)/2) 0,
+        linear-gradient(135deg, var(--_g), var(--c) 0 67%, #0000 0),
+        linear-gradient(45deg, var(--_g), var(--c) 0 67%, #0000 0 83%, var(--c) 0 92%, #0000 0),
+        #202231;
+    /* second color */
+    background-size: var(--s) var(--s);
 }
 
-.pattern-diagonal-lines-sm {
-    background-image: repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%);
-    background-size: 10px 10px;
-}
+@media (max-width: 812px) {
+    .window-grid {
+        display: grid;
+        grid-template-columns: 1fr, 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 20px;
+        grid-template-areas:
+            "score-area score-area score-area score-area"
+            "card-area card-area card-area card-area";
+    }
 
-.pattern-dots-md {
-    background-image: radial-gradient(currentColor 1px, transparent 1px);
-    background-size: calc(10 * 1px) calc(10 * 1px);
 }

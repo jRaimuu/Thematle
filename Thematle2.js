@@ -71,6 +71,7 @@ function initializeGame() {
     ControllerModule.createCardListeners();
     ControllerModule.displayScores();
     ControllerModule.displayInput();
+    ControllerModule.displayWhoseTurn();
 }
 
 //#Card class

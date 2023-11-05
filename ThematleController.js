@@ -90,9 +90,11 @@ export function* iconGenerator() {
 
 export function changeGameState(cardList) {
     const state = gameContext.getgameState();
+    displayCountdown();
 
     if (state == "agent") {
         console.log("State Agent");
+        displayWhoseTurn();
         const turn = gameContext.getActiveTeam();
         const filterdcardList = cardList.filter(cardProperty => cardProperty.getCardGuesed() == false); //filter out the card that are true (i.e. dont hide the ones already guessed)
 
@@ -103,6 +105,7 @@ export function changeGameState(cardList) {
     }
     else {
         console.log("State Decipherer");
+        displayWhoseTurn();
         const filterdcardList = cardList.filter(cardProperty => cardProperty.getCardGuesed() == true); //filter out the card that are false (i.e. dont hide the ones not yet guessed)
 
         cardList.forEach(cardProperty => {
@@ -170,7 +173,7 @@ export function checkScore(team) {
 
     if (score == 0) {
         //current team wins
-        gameOver();
+        displayGameOver();
     }
     else {
         //other team wins
@@ -410,6 +413,17 @@ export function displayInput() {
     createInputListerner();
 }
 
+function displayNextScoreIcon() {
+    const iterator = generator;
+    const currentValue = iterator.next().value;
+
+    const team1Icon = document.getElementById("team1-img");
+    const team2Icon = document.getElementById("team2-img");
+
+    team1Icon.src = currentValue;
+    team2Icon.src = currentValue;
+}
+
 export function displayScores() {
     const team2Score = document.getElementById("team2-score");
     const team1Score = document.getElementById("team1-score");
@@ -418,14 +432,102 @@ export function displayScores() {
     team2Score.textContent = team2.getScore();
 }
 
-export function gameOver() {
-    console.log("game over");
+export function displayWhoseTurn() {
+    const team = gameContext.getActiveTeam();
+    console.log(team);
+    const state = gameContext.getgameState();
+
+    const team1DecipherElement = document.getElementById("team1-decipher");
+    const team1AgentElement = document.getElementById("team1-agent");
+    const team2DecipherElement = document.getElementById("team2-decipher");
+    const team2AgentElement = document.getElementById("team2-agent");
+
+    //Restore to the original text
+    team1DecipherElement.textContent = "DECIPHERER";
+    team1AgentElement.textContent = "AGENT";
+    team2DecipherElement.textContent = "DECIPHERER";
+    team2AgentElement.textContent = "AGENT";
+
+    if (team == team1) {
+        if (state == "decipherer") {
+            team1DecipherElement.textContent += "👈";
+        }
+        else {
+            team1AgentElement.textContent += "👈";
+        }
+    }
+    else {
+        if (state == "decipherer") {
+            team2DecipherElement.textContent += "👈";
+        }
+        else {
+            team2AgentElement.textContent += "👈";
+        }
+    }
+}
+
+function toggleCountdown() {
+    const backgroundDiv = document.getElementById("countdown-div");
+    backgroundDiv.classList.toggle("hidden");
+}
+
+/**
+ * Source: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
+ */
+function displayCountdown() {
+    let timeleft = 3;
+    toggleCountdown();
+
+    function updateCountdown() {
+        if (timeleft <= 0) {
+            toggleCountdown();
+        } else {
+            document.getElementById("countdown").textContent = timeleft + " seconds remaining";
+            timeleft -= 1;
+            setTimeout(updateCountdown, 1000);
+        }
+    }
+
+    updateCountdown(); // Start the countdown
+}
+
+function displayGameOver() {
+    // outer div with class "background-blur"
+    const backgroundBlurDiv = document.createElement('div');
+    backgroundBlurDiv.classList.add('background-blur');
+    backgroundBlurDiv.classList.add('h-align-card');
+    
+    // div background
+    const gameOverDiv = document.createElement('div');
+    gameOverDiv.classList.add('game-over-bg');
+    gameOverDiv.classList.add('pattern');
+    gameOverDiv.classList.add('glow-shadow');
+    gameOverDiv.classList.add('align-text');
+
+    // game over text
+    const gameOverText = document.createElement('p');
+    gameOverText.classList.add('game-over-text');
+    gameOverText.classList.add('v-center');
+    gameOverText.textContent = 'Game Over';
+
+    const restartButton = document.createElement("button");
+    restartButton.className = "submit-btn input-font clue-btn card-shadow align-text";
+    restartButton.type = "submit";
+    restartButton.textContent = "Restart";
+    restartButton.id = "restart-button";
+
+    gameOverDiv.appendChild(gameOverText);
+    gameOverDiv.appendChild(restartButton);
+    backgroundBlurDiv.appendChild(gameOverDiv);
+    document.body.appendChild(backgroundBlurDiv);
+
+    restartButton.addEventListener("click", function() {
+        location.reload(); 
+    });
 }
 
 
-
 /** EVENT LISTENERS **/
-
 
 
 /**
@@ -444,6 +546,7 @@ export function createCardListeners() {
                 cardProperty.setCardGuessed(true); //set the card as guessed
                 updateCardToGuessed(cardProperty);
                 updateTeamScore(cardType);
+                displayNextScoreIcon();
                 checkCardType(cardType, cardList);
             }
         });
@@ -468,43 +571,6 @@ export function createInputListerner() {
         gameContext.setClue(clueWord);
         gameContext.setNumberOfWords(clueDegree);
 
-        // console.log(gameContext.getClue());
-        // console.log(gameContext.getNumberOfWords());
-
         changeGameState(cardList);
     });
 }
-
-//Clue form
-// let clueForm;
-
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     /**
-//      * Event listener for input and dropdown form
-//      */
-//     clueForm = document.getElementById("clue-form");
-//     clueForm.addEventListener("submit", function (event) {
-//         event.preventDefault();
-
-//         gameContext.setgameState("agent")
-//         const cardList = gameContext.getCardInstancesArr();
-//         const clueInput = document.getElementById("clue");
-//         const clueDropdown = document.getElementById("clue-dropdown");
-
-//         const clueWord = clueInput.value;
-//         const clueDegree = parseInt(clueDropdown.value);
-
-//         gameContext.setClue(clueWord);
-//         gameContext.setNumberOfWords(clueDegree);
-
-//         // console.log(gameContext.getClue());
-//         // console.log(gameContext.getNumberOfWords());
-
-//         changeGameState(cardList);
-
-//         //change the color of the cards for the agent
-//         //display the clue and hide the input
-//     });
-
-// });

@@ -13,21 +13,27 @@ UCID: 30150737 -->
     <title>Thematle</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
-<script type="module" src="Thematle2.js"></script> 
+<script type="module" src="Thematle2.js"></script>
 
-<body class="v-center">
-    <!-- <div class="">
-        <div class="pattern-dots-md gray-light">
-            <img style="transform:translate(20px, 20px);"
-                src="https://images.unsplash.com/photo-1488707872600-5507977fe355?auto=format&fit=crop&w=500&q=80" />
-        </div>f
-        <div class="red"></div>
-        <div class="blue"></div>
+<body class="v-center pattern">
+
+    <div id="countdown-div" class="hide-background hidden">
+        <p class="game-over-text v-center">
+            Pass To Next Player
+        </p>
+        <p id="countdown" class="game-over-text v-center"></p>
     </div>
-    <div class="pattern-diagonal-lines-sm gray-lighter">
-        <div style="transform:translate(20px, 20px);">
-            <div class="white"></div>
+
+    <!-- <div class="background-blur h-align-card">
+        <div class="game-over-bg pattern glow-shadow align-text">
+            <p class="game-over-text v-center">
+                Game Over
+            </p>
+            <button class="submit-btn input-font clue-btn card-shadow" type="submit" id="restart-button">Restart</button>
         </div>
+    </div> -->
+    <!-- <div class="bg-show-clue h-align">
+        <h4>Blue Turn</h4>
     </div> -->
 
     <div class="window-grid flex-row justify-evenly">
@@ -37,28 +43,28 @@ UCID: 30150737 -->
             <div class="orange-square score-shadow">
                 <div class="flex-row justify-between">
                     <div class="orange-guessed-card card-shadow h-align-card inset-shadow m-square">
-                        <img class="cover" src="./assets/noun-boss-990401.png">
+                        <img id="team1-img" class="cover" src="./assets/noun-boss-990401.png">
                     </div>
                     <p id="team1-score" class="score"></p>
                 </div>
                 <div class="m-square">
-                    <p class="o-role-font">DECIPHERER</p>
+                    <p id="team1-decipher" class="o-role-font">DECIPHERER</p>
                     <p class="player-font">Name</p>
-                    <p class="o-role-font">AGENT</p>
+                    <p id="team1-agent" class="o-role-font">AGENT</p>
                     <p class="player-font">Name</p>
                 </div>
             </div>
             <div class="purple-square score-shadow">
                 <div class="flex-row justify-between">
                     <div class="purple-guessed-card card-shadow h-align-card inset-shadow m-square">
-                        <img class="cover" src="./assets/noun-child-990391.png">
+                        <img id="team2-img" class="cover" src="./assets/noun-child-990391.png">
                     </div>
                     <p id="team2-score" class="score"></p>
                 </div>
                 <div class="m-square">
-                    <p class="p-role-font">DECIPHERER</p>
+                    <p id="team2-decipher" class="p-role-font">DECIPHERER</p>
                     <p class="player-font">Name</p>
-                    <p class="p-role-font">AGENT</p>
+                    <p id="team2-agent" class="p-role-font">AGENT</p>
                     <p class="player-font">Name</p>
                 </div>
             </div>
@@ -222,7 +228,7 @@ UCID: 30150737 -->
                         <h3>Word</h3>
                     </div>
                 </button> -->
-                
+
                 <!-- <div class="wild-guessed-card card-shadow h-align-card">
                     <img class="cover" src="./assets/noun-thief-3736262.png">
                 </div> -->
@@ -231,7 +237,7 @@ UCID: 30150737 -->
 
             <!-- Clue Input -->
             <div id="clue-container" class="flex-col input-content">
-                <form id = "clue-form">
+                <form id="clue-form">
                     <!-- <input class="input-font input-style card-shadow" type="text" id="clue" name="decipherer-clue"
                         placeholder="Type your clue here">
                     <select class="h-align input-font card-shadow" id="clue-dropdown" name="clue-degree">
@@ -260,15 +266,15 @@ UCID: 30150737 -->
                 </div> -->
 
             </div>
-            
+
         </div>
     </div>
 
     <footer>
         <p class="footer-text">
             Icons created by
-            <a href="https://thenounproject.com/dinosoftlab/" target="_blank">DinosoftLabs</a> 
-            from Noun Project 
+            <a href="https://thenounproject.com/dinosoftlab/" target="_blank">DinosoftLabs</a>
+            from Noun Project
             <a href="https://creativecommons.org/licenses/by/4.0/deed.en" target="_blank">(CC License)</a>.
         </p>
     </footer>
