@@ -35,6 +35,14 @@ export default class Team {
         return this.score;
     }
 
+    setWin(win) {
+        this.win = win;
+    }
+
+    getWin() {
+        return this.win;
+    }
+
 
     //Helper functions
     appendWord(word) {

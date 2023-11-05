@@ -145,12 +145,13 @@ export function updateTeamScore(type) {
 
     if (type == "bomb") {
         const activeTeam = gameContext.getActiveTeam();
-        const score = activeTeam.getScore();
+        const oppositeTeam = (activeTeam === team1) ? team2 : team1
+        const score = oppositeTeam.getScore();
         for (let i = score; i > 0; i--) {
-            decrementTeamScore(activeTeam);
+            decrementTeamScore(oppositeTeam);
         }
         displayScores();
-        checkScore(activeTeam);
+        checkScore(oppositeTeam);
     }
     else if (type == team1 || type == team2) {
         decrementTeamScore(type);
@@ -171,12 +172,16 @@ export function decrementTeamScore(team) {
 export function checkScore(team) {
     const score = team.getScore();
 
-    if (score == 0) {
-        //current team wins
-        displayGameOver();
-    }
-    else {
-        //other team wins
+    if (score <= 0) {
+        if (team == team1) {
+            const message = "Orange Team Win"
+            displayGameOver(message);
+        }
+        else {
+            const message = "Purple Team Win"
+            displayGameOver(message);
+        }
+
     }
 }
 
@@ -491,12 +496,12 @@ function displayCountdown() {
     updateCountdown(); // Start the countdown
 }
 
-function displayGameOver() {
+function displayGameOver(message) {
     // outer div with class "background-blur"
     const backgroundBlurDiv = document.createElement('div');
     backgroundBlurDiv.classList.add('background-blur');
     backgroundBlurDiv.classList.add('h-align-card');
-    
+
     // div background
     const gameOverDiv = document.createElement('div');
     gameOverDiv.classList.add('game-over-bg');
@@ -508,7 +513,7 @@ function displayGameOver() {
     const gameOverText = document.createElement('p');
     gameOverText.classList.add('game-over-text');
     gameOverText.classList.add('v-center');
-    gameOverText.textContent = 'Game Over';
+    gameOverText.textContent = message;
 
     const restartButton = document.createElement("button");
     restartButton.className = "submit-btn input-font clue-btn card-shadow align-text";
@@ -521,8 +526,8 @@ function displayGameOver() {
     backgroundBlurDiv.appendChild(gameOverDiv);
     document.body.appendChild(backgroundBlurDiv);
 
-    restartButton.addEventListener("click", function() {
-        location.reload(); 
+    restartButton.addEventListener("click", function () {
+        location.reload();
     });
 }
 
