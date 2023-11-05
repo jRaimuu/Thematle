@@ -37,3 +37,10 @@ Gameplay:
 Winning:
 The first team to successfully identify all of their team's words on the grid wins the game. If a team uncovers the bomb word, the opposing team wins.
 
+---
+
+*Decipherer View*
+![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Decipherer.png)
+
+*Agent View*
+![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Agent.png)
