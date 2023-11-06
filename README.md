@@ -4,25 +4,25 @@
 Desktop and Mobile
 
 ### Game Genre
-Party Game
+Party Game 🎉
 
-### Game Objective
-The objective of Codenames is to guide your team to identify all of your own team's secret words on the board while avoiding the words belonging to the opposing team and steering clear of the "bomb" word. The first team to correctly identify all their words wins the game.
+### Game Objective 
+The objective of Thematle is to guide your team to identify all of your own team's secret words on the board while avoiding the words belonging to the opposing team and steering clear of the "bomb" word. The first team to correctly identify all their words wins the game.
 
 ### Game Rules
 Pieces:
 
     A 5x5 grid of random words.
-    Orange team cards, purple team cards, and neutral cards.
-    Bomb card.
+    Orange team cards, purple team cards, neutral cards and the bomb card.
     
 Setup:
 
     Cards will be shuffled randomly and placed on the 5x5 grid
     Each team selects a Decipherer and the remaining are agents
-    Due to technology constraints, this is a **Pass and Play game**
     
 Gameplay:
+
+*This is a **Pass and Play game***
 
     The decipherers take turns giving one-word clues and a number to their team to guide them in guessing the words on the grid. The clue should be related to one or more of their team's words.
 
@@ -34,13 +34,19 @@ Gameplay:
 
     Play alternates between the two teams until one of them wins or triggers the bomb.
 
+
 Winning:
+
 The first team to successfully identify all of their team's words on the grid wins the game. If a team uncovers the bomb word, the opposing team wins.
+
+## Sneak Peek
+
+*Decipherer View* 👀
+![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Decipherer.png)
+
+*Agent View* 🔍
+![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Agent.png)
 
 ---
 
-*Decipherer View*
-![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Decipherer.png)
-
-*Agent View*
-![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Agent.png)
+*Thematle is inspired by the popular party game CodeNames*
