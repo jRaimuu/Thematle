@@ -41,11 +41,15 @@ The first team to successfully identify all of their team's words on the grid wi
 
 ## Sneak Peek
 
+### The heart of the game: [Weighted Random Selection Algorithm](https://github.com/jRaimuu/Thematle/blob/main/explanation.md#weighted-random-algorithm)
+
 *Decipherer View* 👀
 ![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Decipherer.png)
 
 *Agent View* 🔍
 ![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Agent.png)
+
+
 
 ---
 
