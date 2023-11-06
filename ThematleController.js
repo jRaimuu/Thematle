@@ -3,23 +3,23 @@ import Team from './Team.js'
 import GameContext, { shuffle } from './GameContext.js'
 import Word, { weightedRandom } from './Word.js'
 
-// let coverCards = [
-//     "./assets/noun-boss-990401.png",
-//     "./assets/noun-child-990391.png",
-//     "./assets/noun-gental-man-990456.png",
-//     "./assets/noun-guard-990463.png",
-//     "./assets/noun-police-990436.png",
-//     "./assets/noun-spy-990425.png",
-//     "./assets/noun-thief-3736262.png",
-//     "./assets/noun-young-990402.png",
-//     "./assets/noun-old-man-990433.png"
-// ]
+/**
+ * Global Variables
+ */
+// TODO: integrate variables into Thematle Game config so you dont have global vars
 let team1 = new Team("team1", "Alice", "Charlie", 9);
 let team2 = new Team("team2", "Bob", "Dale", 8);
 let gameContext = new GameContext(team1, "decipherer", undefined, undefined, [], []);
 const generator = iconGenerator();
 
 
+/**
+ * Generates a unique word from the wordlist based on weight and appends it to one of team1 array, team2 array or wildcard array
+ * until 25 words have been generated (corresponding to the 25 cards on the board);
+ * 
+ * @param {Array} wordList list of words from the chosen theme pack
+ * @param {Array} weightList corresponding weights to the wordlist
+ */
 export function generateTeamWords(wordList, weightList) {
     // TODO: after generating the word, add the weight to a running total for team1 and team2
     // Take the difference between total weight of team1 and team2 to calculate the deviation; generate a new word if the deviation is too high
@@ -65,6 +65,9 @@ export function generateTeamWords(wordList, weightList) {
     console.log("Wildcard words ", gameContext.getWildCardList());
 }
 
+/**
+ * Generator function that generates a new card icon each time it is called
+ */
 export function* iconGenerator() {
     const coverCards = [
         "./assets/noun-boss-990401.png",
@@ -80,14 +83,18 @@ export function* iconGenerator() {
     let counter = 0;
     while (counter < coverCards.length) {
         yield coverCards[counter];
-        counter = (counter + 1) % 9;
+        counter = (counter + 1) % 9; //go back to first icon
     }
 }
 
 
 /**Game context related functions */
 
-
+/**
+ * Updates the dom to display the cards that correspond with the current game state
+ * 
+ * @param {object} cardList list of card currently on the board
+ */
 export function changeGameState(cardList) {
     const state = gameContext.getgameState();
     displayCountdown();
@@ -119,6 +126,13 @@ export function changeGameState(cardList) {
     }
 }
 
+/**
+ * Check the card type. If it is not a bomb or not the active teams card, then change the game state to decipherer and 
+ * active team to opposite team
+ *
+ * @param {String|Object} cardType - The card type, which can be a string or an object.
+ * @param {Array} cardList - The list of cards to check.
+ */
 export function checkCardType(cardType, cardList) {
     const activeTeam = gameContext.getActiveTeam();
 
@@ -160,7 +174,11 @@ export function updateTeamScore(type) {
     }
 }
 
-//#Team Class
+/**
+ * Decrements the score for the team that is passed in
+ * 
+ * @param {object} team 
+ */
 export function decrementTeamScore(team) {
     const scoreID = team.getTeamName() + "-score"; //create the id of the score container by concat teamName with -score
     const teamScore = document.getElementById(scoreID); //get the element with that score ID
@@ -168,7 +186,11 @@ export function decrementTeamScore(team) {
     teamScore.textContent = team.getScore(); //set the new text content of the score
 }
 
-//#Team Class
+/**
+ * Determines what team has won, if any
+ * 
+ * @param {object} team 
+ */
 export function checkScore(team) {
     const score = team.getScore();
 
@@ -251,8 +273,9 @@ export function createCards() {
 }
 
 /**
- * Function to update the cards contents including the image, color, and word
- * depending on the context
+ * Updates the cards contents including the icon, color, and word to indicate that it has been gueesed
+ * 
+ * @param {Card} cardProperty - the Card object for that index of cardInstanceArr
  */
 export function updateCardToGuessed(cardProperty) {
     let cardType = cardProperty.getCardType();
@@ -286,6 +309,12 @@ export function updateCardToGuessed(cardProperty) {
 
 }
 
+/**
+ * Updates the cards contents including the icon, color, and word to indicate that it has been NOT been gueessed
+ * (Ths is different from the Unknoown cards because they display to the Decipherer that the the card hasnt been gueesed)
+ * 
+ * @param {Card} cardProperty - the Card object for that index of cardInstanceArr
+ */
 function updateCardToUnguessed(cardProperty) {
 
     let cardType = cardProperty.getCardType();
@@ -315,6 +344,9 @@ function updateCardToUnguessed(cardProperty) {
 }
 
 /**
+ * Updates the cards contents including the icon, color, and word to indicate that it is Unknown
+ * (Ths is different from the Not Guessed cards because they display to the Agent AND Decipherer that the the card hasnt been gueesed)
+ * i.e. burgundy cards
  * 
  * @param {Card} cardProperty - the Card object for that index of cardInstanceArr
  */
@@ -382,6 +414,9 @@ export function revealClue() {
     createEndTurnListener();
 }
 
+/**
+ * Updates the DOM to display the input field for the decipherer
+ */
 export function displayInput() {
     const clueContainer = document.getElementById("clue-container");
 
@@ -427,6 +462,9 @@ export function displayInput() {
     createInputListerner();
 }
 
+/**
+ * Updates the dom to display the next icon to be placed based on the icon generator function
+ */
 function displayNextScoreIcon() {
     const iterator = generator;
     const currentValue = iterator.next().value;
@@ -438,6 +476,9 @@ function displayNextScoreIcon() {
     team2Icon.src = currentValue;
 }
 
+/**
+ * Updates the dom to display the new scores
+ */
 export function displayScores() {
     const team2Score = document.getElementById("team2-score");
     const team1Score = document.getElementById("team1-score");
@@ -446,6 +487,9 @@ export function displayScores() {
     team2Score.textContent = team2.getScore();
 }
 
+/**
+ * Updates the dom to display whose turn it is (as indicated by a 👈)
+ */
 export function displayWhoseTurn() {
     const team = gameContext.getActiveTeam();
     console.log(team);
@@ -480,12 +524,16 @@ export function displayWhoseTurn() {
     }
 }
 
+/**
+ * Updates the dom to toggle the countdown overlay so that other players cannot see eachothers cards
+ */
 function toggleCountdown() {
     const backgroundDiv = document.getElementById("countdown-div");
     backgroundDiv.classList.toggle("hidden");
 }
 
 /**
+ * Updates the countdown number
  * Source: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
  */
 function displayCountdown() {
@@ -494,7 +542,7 @@ function displayCountdown() {
 
     function updateCountdown() {
         if (timeleft <= 0) {
-            toggleCountdown();
+            toggleCountdown(); //once done, remove the overlay
         } else {
             document.getElementById("countdown").textContent = timeleft + " seconds remaining";
             timeleft -= 1;
@@ -505,6 +553,11 @@ function displayCountdown() {
     updateCountdown(); // Start the countdown
 }
 
+/**
+ * Updates the dom to display the game over popup with corresponding message 
+ * 
+ * @param {String} message the meassage to be display on game over popup
+ */
 function displayGameOver(message) {
     // outer div with class "background-blur"
     const backgroundBlurDiv = document.createElement('div');
@@ -569,6 +622,9 @@ export function createCardListeners() {
 
 }
 
+/**
+ * Event listener for the decipherers input field
+ */
 export function createInputListerner() {
     let clueForm;
     clueForm = document.getElementById("clue-form");
@@ -590,6 +646,9 @@ export function createInputListerner() {
     });
 }
 
+/**
+ * Event listener for the end turn button
+ */
 function createEndTurnListener() {
     const cardList = gameContext.getCardInstancesArr();
     const activeTeam = gameContext.getActiveTeam();

@@ -24,7 +24,7 @@ export default class Word {
         return this.weightList;
     }
 
-    //Helper function
+    //Helper functions
 
     appendWordList(word) {
         this.wordList.push(word);
@@ -36,9 +36,18 @@ export default class Word {
 
 }
 
+/**
+ * 
+ * Weighted Random ALGORITHM to choose words randomly based on weight from the wordlist
+ * 
+ * Source: https://dev.to/trekhleb/weighted-random-algorithm-in-javascript-1pdc
+ * 
+ * @param {Array} wordList list of words from the chosen theme pack
+ * @param {Array} weightList corresponding weights to the wordlist
+ * @returns 
+ */
 export function weightedRandom(wordList, weightList) {
-    //Weighted Random Algorithm to choose words randomly based on weight from
-    //the wordlist
+    
     const cumulativeWeights = [];
 
     for (let i = 0; i < weightList.length; i += 1) {

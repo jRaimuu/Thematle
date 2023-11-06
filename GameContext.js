@@ -67,6 +67,16 @@ export default class GameContext {
     }
 }
 
+/**
+ * Fisher–Yates Shuffle ALGORITHM
+ * 
+ * Shuffles the list containing card objects
+ * 
+ * Source: https://bost.ocks.org/mike/shuffle/
+ * 
+ * @param {Array} cardList list of un shuffled cards on the board
+ * @returns cardlist: the newly shuffled card list
+ */
 export function shuffle(cardList) {
     let randomIndex;
     let currentIndex = cardList.length;
