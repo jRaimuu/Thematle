@@ -141,8 +141,9 @@ export function checkCardType(cardType, cardList) {
         gameContext.setActiveTeam(oppositeTeam); //switch the active team to other team
         gameContext.setgameState("decipherer");  //switch the game state to agent
         console.log("Nex team ", oppositeTeam);
-
-        changeGameState(cardList)
+        setTimeout(function() {
+            changeGameState(cardList);
+        }, 1000);
     }
 
 }
@@ -220,14 +221,21 @@ export function createCards() {
     const cardType = [
         { name: team1, words: team1.words, count: 9 },
         { name: team2, words: team2.words, count: 8 },
-        { name: "neutral", words: gameContext.getWildCardList(), count: 7 },
-        { name: "bomb", words: gameContext.getWildCardList(), count: 1 }
+        { name: "neutral", words: gameContext.getWildCardList(), count: 8 },
+        // { name: "bomb", words: gameContext.getWildCardList(), count: 1 }
     ];
 
     //make a new card for each of the types in the cardType array
     for (const type of cardType) {
         for (let i = 0; i < type.count; i++) {
-            gameContext.appendCardInstancesArr(new Card(uniqueID++, type.name, type.words[i], false, "./assets/unknown-mask.png"));
+            if (type.name === "neutral" && i === 7) { //for the very last cardType (i.e. when the type is "neutral") make the last card from the array a bomb card instead of neutral card
+                // console.log("Making bomb card");
+                gameContext.appendCardInstancesArr(new Card(uniqueID++, "bomb", type.words[i], false, "./assets/unknown-mask.png"));
+            }
+            else {
+                gameContext.appendCardInstancesArr(new Card(uniqueID++, type.name, type.words[i], false, "./assets/unknown-mask.png"));
+            }
+            // console.log("Name of type ", type.name);
         }
     }
 
@@ -609,7 +617,7 @@ export function createCardListeners() {
 
         cardButton.addEventListener("click", () => {
             //allow user to interact with the card if the game state is agent and the card has not yet been gueesed (i.e. == false)
-            if (gameContext.getgameState() === "agent" && !cardProperty.getCardGuesed()) { 
+            if (gameContext.getgameState() === "agent" && !cardProperty.getCardGuesed()) {
                 const cardType = cardProperty.getCardType();
                 cardProperty.setCardGuessed(true); //set the card as guessed
                 updateCardToGuessed(cardProperty);
