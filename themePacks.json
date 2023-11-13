@@ -243,11 +243,11 @@
             "weight": 0.04
         },
         {
-            "word": "mountain",
+            "word": "hike",
             "weight": 0.06
         },
         {
-            "word": "wildlife",
+            "word": "wild",
             "weight": 0.08
         },
         {
@@ -275,7 +275,7 @@
             "weight": 0.2
         },
         {
-            "word": "hiking",
+            "word": "talk",
             "weight": 0.22
         },
         {
@@ -437,67 +437,67 @@
     ],
     "HolidayList": [
         {
-            "word": "phone",
+            "word": "bunny",
             "weight": 0.02
         },
         {
-            "word": "coffee",
+            "word": "egg",
             "weight": 0.04
         },
         {
-            "word": "shoes",
+            "word": " carol",
             "weight": 0.06
         },
         {
-            "word": "watch",
+            "word": "grinch",
             "weight": 0.08
         },
         {
-            "word": "keys",
+            "word": "sleigh",
             "weight": 0.1
         },
         {
-            "word": "wallet",
+            "word": "santa",
             "weight": 0.12
         },
         {
-            "word": "glasses",
+            "word": "cane",
             "weight": 0.14
         },
         {
-            "word": "car",
+            "word": "holly",
             "weight": 0.16
         },
         {
-            "word": "pen",
+            "word": "red",
             "weight": 0.18
         },
         {
-            "word": "computer",
+            "word": "spirit",
             "weight": 0.2
         },
         {
-            "word": "toothbrush",
+            "word": "pie",
             "weight": 0.22
         },
         {
-            "word": "chair",
+            "word": "witch",
             "weight": 0.24
         },
         {
-            "word": "umbrella",
+            "word": "loge",
             "weight": 0.26
         },
         {
-            "word": "book",
+            "word": "spooky",
             "weight": 0.28
         },
         {
-            "word": "spoon",
+            "word": "elf",
             "weight": 0.3
         },
         {
-            "word": "headphones",
+            "word": "unwrap",
             "weight": 0.32
         },
         {
@@ -541,7 +541,7 @@
             "weight": 0.52
         },
         {
-            "word": "fork",
+            "word": "family",
             "weight": 0.54
         },
         {
@@ -549,11 +549,11 @@
             "weight": 0.56
         },
         {
-            "word": "television",
+            "word": "brisk",
             "weight": 0.58
         },
         {
-            "word": "toilet",
+            "word": "ski",
             "weight": 0.6
         },
         {
@@ -565,11 +565,11 @@
             "weight": 0.64
         },
         {
-            "word": "calendar",
+            "word": "care",
             "weight": 0.66
         },
         {
-            "word": "hanger",
+            "word": "joy",
             "weight": 0.68
         },
         {
@@ -581,15 +581,15 @@
             "weight": 0.72
         },
         {
-            "word": "microwave",
+            "word": "scare",
             "weight": 0.74
         },
         {
-            "word": "trash",
+            "word": "crow",
             "weight": 0.76
         },
         {
-            "word": "scissors",
+            "word": "static",
             "weight": 0.78
         },
         {
@@ -601,7 +601,7 @@
             "weight": 0.82
         },
         {
-            "word": "santa",
+            "word": "marble",
             "weight": 0.84
         },
         {
@@ -609,7 +609,7 @@
             "weight": 0.86
         },
         {
-            "word": "reindeer",
+            "word": "deer",
             "weight": 0.88
         },
         {
@@ -617,7 +617,7 @@
             "weight": 0.9
         },
         {
-            "word": "fireworks",
+            "word": "cattle",
             "weight": 0.92
         },
         {
@@ -633,7 +633,7 @@
             "weight": 0.98
         },
         {
-            "word": "fireplace",
+            "word": "mint",
             "weight": 1.0
         }
     ]

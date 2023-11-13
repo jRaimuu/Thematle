@@ -16,7 +16,7 @@
   * `words =  [ '🍞', '🥓', '🥞' ]`
   * `weights = [  3,    4,    1  ]`
   * `CumulativeWeights = [  3,    7,    8  ]`
-      * (i.e. if you threw a ball 🥎 into a bucket randomly, it has a higher chance of landing in the bacon bucket because it is larger than the others)
+      * (i.e. if you threw a ball into a bucket randomly, it has a higher chance of landing in the bacon bucket because it is larger than the others)
 * After getting the cumulative weights, it generates a random number between 0 and the length of the cumulative weights array.
 * It then iterates through the cumulative weights array, comparing the weight element at that index with the random number.
 * Eventually, if the weight at some index `i` is greater than or equal to the random number, then the algorithm returns that index `i`.

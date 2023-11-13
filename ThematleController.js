@@ -197,12 +197,16 @@ export function checkScore(team) {
 
     if (score <= 0) {
         if (team == team1) {
-            const message = "Orange Team Win"
-            displayGameOver(message);
+            const message = "Orange Team Win 🎉"
+            setTimeout(function() {
+                displayGameOver(message);
+            }, 1000);
         }
         else {
-            const message = "Purple Team Win"
-            displayGameOver(message);
+            const message = "Purple Team Win 🎉"
+            setTimeout(function() {
+                displayGameOver(message);
+            }, 1000);
         }
 
     }
@@ -269,10 +273,11 @@ export function createCards() {
         cardImage.className = "cover";
         cardImage.src = cardProperty.cardIcon;
 
-        const h3 = document.createElement("h3");
-        h3.textContent = cardProperty.cardWord;
+        const text = document.createElement("div");
+        text.textContent = cardProperty.cardWord;
+        text.className = "card-text";
 
-        cardContent.appendChild(h3);
+        cardContent.appendChild(text);
         cardButton.appendChild(cardImage);
         cardButton.appendChild(cardContent);
         cardGrid.appendChild(cardButton);
@@ -290,7 +295,9 @@ export function updateCardToGuessed(cardProperty) {
     const cardButton = document.getElementById(cardProperty.getCardID());
     const cardIcon = cardButton.querySelector("img");
     const cardContent = cardButton.querySelector("div");
+    const cardText = cardContent.querySelector("div");
 
+    cardText.className = "card-text";
     cardButton.classList.remove("unknown-card");
     cardContent.classList.remove("bg-wild-card-word");
 
@@ -307,7 +314,7 @@ export function updateCardToGuessed(cardProperty) {
     else if (cardType == "bomb") {
         cardButton.classList.add("black-guessed-card");
         cardContent.classList.add("bg-black-card-word");
-        cardIcon.src = "./assets/noun-bomb-5543824.png";
+        cardIcon.src = "./assets/noun-bomb-5543824.png ";
     }
     else {
         cardButton.classList.add("wild-guessed-card");
@@ -329,7 +336,9 @@ function updateCardToUnguessed(cardProperty) {
     const cardButton = document.getElementById(cardProperty.getCardID());
     const cardIcon = cardButton.querySelector("img");
     const cardContent = cardButton.querySelector("div");
+    const cardText = cardContent.querySelector("div");
 
+    cardText.className = "card-text";
     cardIcon.src = './assets/unknown-mask.png';
 
     if (cardType == team1) {
@@ -363,6 +372,9 @@ export function updateCardToUnknown(cardProperty) {
     //TODO change image back
     const cardButton = document.getElementById(cardProperty.getCardID());
     const cardContent = cardButton.querySelector("div");
+    const cardText = cardContent.querySelector("div");
+
+    cardText.className = "flipped-text";
 
     if (cardProperty.getCardType() == team1) {
         cardButton.classList.remove("orange-guessed-card");
@@ -513,21 +525,39 @@ export function displayWhoseTurn() {
     team1AgentElement.textContent = "AGENT";
     team2DecipherElement.textContent = "DECIPHERER";
     team2AgentElement.textContent = "AGENT";
+    
+    team1DecipherElement.classList.toggle('o-role-font', true);
+    team1AgentElement.classList.toggle('o-role-font', true);
+    team2DecipherElement.classList.toggle('p-role-font', true);
+    team2AgentElement.classList.toggle('p-role-font', true);
 
+    team1DecipherElement.classList.toggle('active', false);
+    team1AgentElement.classList.toggle('active', false);
+    team2DecipherElement.classList.toggle('active', false);
+    team2AgentElement.classList.toggle('active', false);
+    
     if (team == team1) {
         if (state == "decipherer") {
-            team1DecipherElement.textContent += "👈";
+            team1DecipherElement.textContent += " 👈";
+            team1DecipherElement.classList.toggle('active', true);
+            team1DecipherElement.classList.toggle('o-role-font', false);
         }
         else {
-            team1AgentElement.textContent += "👈";
+            team1AgentElement.textContent += " 👈";
+            team1AgentElement.classList.toggle('active', true);
+            team1AgentElement.classList.toggle('o-role-font', false);
         }
     }
     else {
         if (state == "decipherer") {
-            team2DecipherElement.textContent += "👈";
+            team2DecipherElement.textContent += " 👈";
+            team2DecipherElement.classList.toggle('active', true);
+            team2DecipherElement.classList.toggle('p-role-font', false);
         }
         else {
-            team2AgentElement.textContent += "👈";
+            team2AgentElement.textContent += " 👈";
+            team2AgentElement.classList.toggle('active', true);
+            team2AgentElement.classList.toggle('p-role-font', false);
         }
     }
 }

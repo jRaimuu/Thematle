@@ -163,11 +163,30 @@ UCID: 30150737 */
 
 .o-role-font,
 .p-role-font,
-.player-font {
+.player-font,
+.active {
     font-family: 'Noto Sans', sans-serif;
     font-weight: 600;
     font-size: 16px;
     color: #a93b08;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* Start and end position */
+    }
+    50% {
+        transform: translateY(-1.5px); /* Bounce height */
+    }
+
+    0%, 100% {
+        transition-timing-function: ease-in-out;
+    }
+}
+
+.active {
+    color: #ffc83d;
+    animation: bounce 0.5s infinite alternate;
 }
 
 .p-role-font {
@@ -179,11 +198,25 @@ UCID: 30150737 */
     color: white;
 }
 
+.card-text,
+.flipped-text,
 h3,
 h4 {
     font-family: 'Noto Sans', sans-serif;
     color: white;
+    font-size: larger;
+    transform: rotateY(0deg);
 }
+
+.card-text {
+    font-weight: 600;
+}
+
+.flipped-text {
+    font-weight: 600;
+    transform: rotateY(180deg);
+}
+
 
 h4 {
     font-size: x-large;
@@ -216,6 +249,7 @@ h4 {
     border: 2px solid #5f3191;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
+    transform: rotateY(180deg);
 }
 
 
@@ -232,6 +266,7 @@ h4 {
     border: 1px solid #fadb4f;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
+    transition: transform 0.5s ease;
 }
 
 .orange-guessed-card:hover {
