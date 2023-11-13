@@ -37,17 +37,13 @@ Gameplay:
 
 Winning:
 
-The first team to successfully identify all of their team's words on the grid wins the game. If a team uncovers the bomb word, the opposing team wins.
+The first team to successfully identify all of their team's words on the grid wins the game. If a team uncovers the bomb word, the **opposing** team wins.
 
 ## Sneak Peek
 
 ### The heart of the game: [Weighted Random Selection Algorithm](https://github.com/jRaimuu/Thematle/blob/main/explanation.md#weighted-random-algorithm)
 
-*Decipherer View* 👀
-![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Decipherer.png)
-
-*Agent View* 🔍
-![image](https://raw.githubusercontent.com/jRaimuu/Thematle/main/assets/Agent.png)
+![video](https://github.com/jRaimuu/Thematle/blob/main/assets/thematle-demo.gif)
 
 
 
