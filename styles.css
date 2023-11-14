@@ -259,7 +259,7 @@ h4 {
 .black-guessed-card {
     /* background-color: #25c0b7; */
     background: linear-gradient(-45deg, #d3581f, #f4a74d);
-    min-width: 60px;
+    min-width: 65px;
     width: 10vw;
     height: 12vh;
     border-radius: 10px;
@@ -512,6 +512,10 @@ footer {
         grid-template-areas:
             "score-area score-area score-area score-area"
             "card-area card-area card-area card-area";
+    }
+
+    .min-width {
+        min-width: 30%;
     }
 
 }

@@ -20,3 +20,5 @@
 * After getting the cumulative weights, it generates a random number between 0 and the length of the cumulative weights array.
 * It then iterates through the cumulative weights array, comparing the weight element at that index with the random number.
 * Eventually, if the weight at some index `i` is greater than or equal to the random number, then the algorithm returns that index `i`.
+
+### `GenerateTeamWords`
