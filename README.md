@@ -43,7 +43,7 @@ The first team to successfully identify all of their team's words on the grid wi
 
 ### The heart of the game: [Weighted Random Selection Algorithm](https://github.com/jRaimuu/Thematle/blob/main/explanation.md#weighted-random-algorithm)
 
-![video](https://github.com/jRaimuu/Thematle/blob/main/assets/thematle-demo.gif)
+https://github.com/jRaimuu/Thematle/assets/109131356/1608e778-00b9-4c3c-88d3-95af6d126ae9
 
 
 
