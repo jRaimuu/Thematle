@@ -19,3 +19,13 @@
     * To overcome this challenge, I found that manually designing the frontend first helped me visualize how I wanted it to appear. Then, by utilizing AI, I could efficiently implement the functions required to manipulate the DOM and display the new information. 
     
     * This approach streamlined the development process and improved the overall cohesiveness of the frontend and backend components of the game.
+
+* To expand on this project in the future, I hope to:
+    
+    * Refactor/Remove global variables to improve encapsulation of data 
+
+    * Add additional pages such as a start page where users can configure their names, choose teams and select from the list of theme packs
+
+    * Have a function that minimizes the deviation between each teams weights in order to make the words fair
+
+        * Ex. team1 might have more words that are of lesser weight to team2, giving them an unfair advantage
