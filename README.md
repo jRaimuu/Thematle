@@ -1,4 +1,5 @@
-# Thematle
+# Thematle <img src="https://github.com/jRaimuu/Thematle/assets/109131356/0a810fc4-1462-44ac-b5cd-141b43dd7a42" height="48" width="48" align=right>
+
 
 ### Target Platform
 Desktop and Mobile
